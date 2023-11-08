@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Nunito+Sans:ital,wght@1,400;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- 네비게이션 바 -->
+      <button id="navbar-toggle" class="navbar-toggle">☰</button>
+      <nav class="sidebar">
+        <ul>
+          <li><a href="/dashboard/dashboard.html">My Dashboard</a></li>
+          <li><a href="/index.html">Logout</a></li>
+          <li><a href="/global/global.html">Global Dashboard (준비중)</a></li>
+        </ul>
+      </nav>
+
+      <!-- 아티클 section -->
+      <div class="main-content">
+        <!-- 통계 section -->
+        <section class="stats-section">
+          <div class="stats-section-block stats-total-view">
+            <span class="stats-section-block-title">Total View</span>
+            70,000
+            <span class="stats-section-block-detail">총 조회수 합입니다.</span>
+          </div>
+          <div class="stats-section-block stats-today-view">
+            <span class="stats-section-block-title">Today View</span>
+            50
+            <span class="stats-section-block-detail"
+              >오늘 조회수 합입니다.</span
+            >
+          </div>
+          <div class="stats-section-block stats-total-like">
+            <span class="stats-section-block-title">Total Like</span>
+            50
+            <span class="stats-section-block-detail"
+              >총 좋아요 수 합입니다.</span
+            >
+          </div>
+        </section>
+
+        <!-- 게시글 section -->
+        <section class="posts-section">
+          <h2>List Of Posts</h2>
+          <ul id="posts-list">
+            <li>
+              tewgdstrrgd
+              <span class="posts-list-today-veiw">
+                <img
+                  width="24"
+                  height="24"
+                  src="https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png"
+                  alt="external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya"
+                />
+                20
+              </span>
+            </li>
+            <li>
+              tewgdstrrgd
+              <span class="posts-list-today-veiw">
+                <img
+                  width="24"
+                  height="24"
+                  src="https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png"
+                  alt="external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya"
+                />
+                20
+              </span>
+            </li>
+            <li>
+              tewgdstrrgd
+              <span class="posts-list-today-veiw">
+                <img
+                  width="24"
+                  height="24"
+                  src="https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png"
+                  alt="sleepy-eyes"
+                />
+                20
+              </span>
+            </li>
+            <li>
+              tewgdstrrgd
+              <span class="posts-list-today-veiw">
+                <img
+                  width="24"
+                  height="24"
+                  src="https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png"
+                  alt="external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya"
+                />
+                20
+              </span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- footer section -->
+        <hr />
+        <footer id="section-footer">made by Nuung</footer>
+      </div>
+    </div>
+    <script src="./index.js"></script>
+  </body>
+</html>

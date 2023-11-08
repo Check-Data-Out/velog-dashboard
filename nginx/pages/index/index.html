@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Nunito+Sans:ital,wght@1,400;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-container-logo">
+        <img
+          src="https://velog.velcdn.com/images/velog/profile/9aa07f66-5fcd-41f4-84f2-91d73afcec28/green%20favicon.png"
+          alt="velog logo image"
+        />
+        <span>벨로그 통계 대시보드</span>
+      </div>
+      <form id="login-form">
+        <input
+          type="text"
+          id="access-token"
+          placeholder="Access Token"
+          required
+        />
+        <input
+          type="text"
+          id="refresh-token"
+          placeholder="Refresh Token"
+          required
+        />
+        <button type="submit">Check In</button>
+      </form>
+      <span id="login-container-footer">made by Nuung</span>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

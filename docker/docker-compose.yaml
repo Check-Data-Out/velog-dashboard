@@ -1,0 +1,43 @@
+version: '3'
+services:
+  # ==========================================================================
+  # WebServer - Nignx
+  # ==========================================================================
+
+  vdash-nginx:
+    image: nginx
+    hostname: vdash-nginx
+    container_name: vdash-nginx
+    volumes:
+      - ../nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ../nginx/conf.d:/etc/nginx/conf.d
+      - ../nginx/pages:/etc/nginx/pages
+      - ../nginx/logs:/var/log/nginx
+    ports:
+      - "80:80"
+    networks:
+      - velog-dashboard-net
+
+  # ==========================================================================
+  # 만약 셀프 호스팅을 하고 싶으시면 아래 mongodb 세팅을 해주세요
+  # ==========================================================================
+
+  # vdash-mongodb:
+  #   image: mongo
+  #   hostname: vdash-mongodb
+  #   container_name: vdash-mongodb
+  #   ports:
+  #     - "29019:29019"
+  #   volumes:
+  #     - ../mongodb/data:/data/db
+  #     - ../mongodb/cnf:/etc/mongo
+  #     - ../mongodb/logs:/var/log/mongodb
+  #   entrypoint: ["mongod", "-f", "/etc/mongo/mongod.conf"]
+  #   environment:
+  #     TZ: Asia/Seoul
+  #   networks:
+  #     - velog-dashboard-net
+
+networks:
+  velog-dashboard-net:
+    driver: bridge
