@@ -1,0 +1,12 @@
+{
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "flake8.args": [
+        "--max-line-length=120",
+        "--ignore=E203,E501,W503",
+    ]
+}

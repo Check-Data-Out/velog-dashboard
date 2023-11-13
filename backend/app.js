@@ -33,7 +33,7 @@ app.set("env", process.env.NODE_ENV);
 
 // ==================== API Routing Setting ==================== //
 
-import userInfoRouter from "./src/routes/userInfoRouter";
+import userInfoRouter from "./src/routes/userInfoRouter.js";
 
 // router mapping
 userInfoRouter(app, "/api/user");

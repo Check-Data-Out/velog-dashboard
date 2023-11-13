@@ -2,7 +2,7 @@
 
 > 가나다라
 
-## getting started
+## Getting Started
 
 1. 
 

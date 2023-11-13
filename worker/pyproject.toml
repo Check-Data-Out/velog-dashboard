@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "velog-dashboard-worker"
+version = "0.1.0"
+description = ""
+authors = ["Nuung <qlgks1@naver.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+aiohttp = "^3.8.6"
+motor = "^3.3.1"
+pydantic = "^2.4.2"
+pytz = "^2023.3.post1"
+aiohttp-retry = "^2.8.3"
+python-dotenv = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.11.0"
+flake8 = "^6.1.0"
+
+# 아래 섹션은 black의 설정
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+# 아래 섹션은 flake8의 설정
+[tool.flake8]
+ignore = "E203, E501, W503"
+max-line-length = 88
+exclude = ".git,__pycache__,docs/,old/,build/,dist/"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
