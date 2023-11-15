@@ -74,7 +74,17 @@
 
         <!-- 게시글 section -->
         <section class="posts-section">
-          <h2>List Of Posts</h2>
+          <h2>
+            List Of Posts
+            <span>(total / today)</span>
+          </h2>
+
+          <div class="posts-section-menu">
+            <button data-sortBy="">기본 정렬</button>
+            <button data-sortBy="title">title 사전순 정렬</button>
+            <button data-sortBy="totalViewCount">total view 정렬</button>
+            <button data-sortBy="lastViewCount">today view 정렬</button>
+          </div>
           <img
             src="https://cdn.dribbble.com/users/46633/screenshots/1185889/civchoice-loading-gifs800x600.gif"
             alt="loading"

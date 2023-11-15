@@ -53,7 +53,8 @@ const updateUserStats = async () => {
 
 const updatePostList = async () => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    const res = await getData(`/post/${userInfo.userId}`, {}, { accessToken: userInfo.accessToken, refreshToken: userInfo.refreshToken });
+    const { sortBy, order } = JSON.parse(localStorage.getItem("postsSort"));
+    const res = await getData(`/post/${userInfo.userId}`, { sortBy, order }, { accessToken: userInfo.accessToken, refreshToken: userInfo.refreshToken });
     const result = res.result;
 
     let tempInnerHtml = "";
@@ -63,13 +64,13 @@ const updatePostList = async () => {
             <li>
                 <a href="${ele["url"]}">${ele["title"]}</a>
                 <span class="posts-list-today-veiw">
-                <img
-                    width="24"
-                    height="24"
-                    src=${(ele["isUp"]) ? "https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png" : "https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png"} 
-                    alt="sleepy-eyes"
-                />
-                ${ele["totalViewCount"]}
+                    ${ele["totalViewCount"]} / ${ele["lastViewCount"]}&nbsp;
+                    <img
+                        width="24"
+                        height="24"
+                        src=${(ele["isUp"]) ? "https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png" : "https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png"} 
+                        alt="sleepy-eyes"
+                    />
                 </span>
             </li>
         `;
@@ -81,6 +82,25 @@ const updatePostList = async () => {
     }
     document.getElementById("posts-list").innerHTML = tempInnerHtml;
     return res;
+};
+
+
+// updatePostList 에 sortBy(title, totalViewCount, lastViewCount) / order(desc, asc) 추가
+const setPostSorting = (event) => {
+    // 현재 버튼의 정렬 설정을 가져옵니다.
+    const button = event.target;
+    const sortBy = button.getAttribute("data-sortBy");
+
+    // 로컬 스토리지에서 이전 정렬 설정을 가져옵니다.
+    const currentSort = JSON.parse(localStorage.getItem("postsSort")) || {};
+
+    // 클릭된 버튼의 정렬이 이전에 선택한 정렬과 같고, 
+    // 정렬 순서가 "asc"이면 "desc"로, 그렇지 않으면 "asc"로 토글합니다.
+    const newOrder = currentSort.sortBy === sortBy && currentSort.order === "asc" ? "desc" : "asc";
+
+    // 로컬 스토리지에 새 정렬 설정을 저장합니다.
+    localStorage.setItem("postsSort", JSON.stringify({ sortBy: sortBy, order: newOrder }));
+    updatePostList();
 };
 
 
@@ -99,8 +119,16 @@ const init = () => {
     updateUserStats();
     polling(updateUserStats, 60000, (res) => { return false });
 
+    // post sorting default value
+    localStorage.setItem("postsSort", JSON.stringify({ sortBy: "", order: "" }));
     updatePostList();
     polling(updateUserStats, 360000, (res) => { return false });
+
+    // post sotring button init
+    const buttons = document.querySelectorAll("button[data-sortby]");
+    buttons.forEach(button => {
+        button.addEventListener("click", (event) => { setPostSorting(event); });
+    });
 
     // mobile toggling 강제
     if (window.matchMedia("(max-width: 600px)").matches) {

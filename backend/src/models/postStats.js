@@ -81,6 +81,7 @@ PostStatsSchema.statics.allPostsAggByUserId = async function (userId) {
                 uuid: doc.uuid,
                 title: doc.title,
                 totalViewCount: doc.totalViewCount,
+                lastViewCount: lastStat.viewCount,
                 updatedAt: doc.updatedAt.$date,
                 url: doc.url,
                 userId: doc.userId,

@@ -158,6 +158,11 @@ nav ul li:last-child a {
     align-items: center;
 }
 
+.posts-section h2 span {
+    font-size: 0.96rem;
+    color: var(--main-velog-color);
+}
+
 #posts-list {
     width: 100%;
 }
@@ -205,5 +210,13 @@ hr {
     /* 화면 너비가 600px 이하일 때 적용할 스타일을 여기에 작성합니다. */
     .stats-section {
         flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+
+    /* 화면 너비가 1200px 이하일 때 적용할 스타일을 여기에 작성합니다. */
+    #posts-list li a {
+        max-width: 740px;
     }
 }
