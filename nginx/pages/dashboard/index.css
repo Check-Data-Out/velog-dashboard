@@ -118,6 +118,14 @@ ul li:last-child a {
     color: var(--main-velog-color);
 }
 
+.stats-section-block-info {
+    font-size: 1.1rem;
+}
+
+.stats-section-block-info span {
+    margin: 5px;
+}
+
 .posts-section {
     display: flex;
     flex-direction: column;

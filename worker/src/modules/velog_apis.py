@@ -1,9 +1,7 @@
-# noqa
-
 import asyncio
 
-# import aiohttp
 from aiohttp_retry import ExponentialRetry, RetryClient
+from logger import LOGGER as log
 
 
 def get_header(access_token: str, refresh_token: str) -> dict:
@@ -74,42 +72,46 @@ async def get_post_stats(session, post_id: str, actoken: str, reftoken: str) -> 
             res = await response.json()
         except Exception as e:
             res = None
-            print(f"post_id >> {post_id}, error >> {e}")
+            log.error(f"post_id >> {post_id}, error >> {e}")
         return res
 
 
-async def fetch_stats(session, total_post_id_dict: dict, actoken, reftoken):
+async def fetch_stats(total_post_id_dict: dict, actoken, reftoken):
     """
     ### 모든 페이지의 포스트를 가져온 dict 기반으로 통계 업데이트 해서 return 하는 함수
     - `fetch_posts` 로 만들어진 `total_post_id_dict` 필수
     """
-    tasks = [
-        asyncio.create_task(get_post_stats(session, post_id, actoken, reftoken))
-        for post_id in total_post_id_dict
-    ]
-    stats_results = await asyncio.gather(*tasks)
-    for post_id, result in zip(total_post_id_dict.keys(), stats_results):
-        try:
-            total_post_id_dict[post_id]["total"] = result["data"]["getStats"]["total"]
+    retry_options = ExponentialRetry(attempts=3)
+    async with RetryClient(retry_options=retry_options) as session:
+        tasks = [
+            asyncio.create_task(get_post_stats(session, post_id, actoken, reftoken))
+            for post_id in total_post_id_dict
+        ]
+        stats_results = await asyncio.gather(*tasks)
+        for post_id, result in zip(total_post_id_dict.keys(), stats_results):
+            try:
+                total_post_id_dict[post_id]["total"] = result["data"]["getStats"][
+                    "total"
+                ]
 
-            # daily stats
-            daily_cnt = result["data"]["getStats"]["count_by_day"]
-            for cnt in daily_cnt:
-                total_post_id_dict[post_id]["stats"].append(
-                    dict(
-                        count=cnt["count"],
-                        day=cnt["day"],
+                # daily stats
+                daily_cnt = result["data"]["getStats"]["count_by_day"]
+                for cnt in daily_cnt:
+                    total_post_id_dict[post_id]["stats"].append(
+                        dict(
+                            count=cnt["count"],
+                            day=cnt["day"],
+                        )
                     )
-                )
 
-            # daily stats sorting
-            total_post_id_dict[post_id]["stats"] = sorted(
-                total_post_id_dict[post_id]["stats"], key=lambda x: x["day"]
-            )
-        except Exception as e:
-            print(f"post_id >> {post_id} error >> {e}, result >> {result}")
-            continue
-    return total_post_id_dict
+                # daily stats sorting
+                total_post_id_dict[post_id]["stats"] = sorted(
+                    total_post_id_dict[post_id]["stats"], key=lambda x: x["day"]
+                )
+            except Exception as e:
+                log.error(f"post_id >> {post_id} error >> {e}, result >> {result}")
+                continue
+        return total_post_id_dict
 
 
 async def fetch_posts(user_name: str):

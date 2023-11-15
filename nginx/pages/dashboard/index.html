@@ -10,6 +10,9 @@
       href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Nunito+Sans:ital,wght@1,400;1,900&display=swap"
       rel="stylesheet"
     />
+    <!-- Sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- CUSTOM -->
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
@@ -28,6 +31,22 @@
       <div class="main-content">
         <!-- 통계 section -->
         <section class="stats-section">
+          <div
+            class="stats-section-block stats-section-block-info stats-total-view"
+          >
+            <span class="stats-section-block-title"
+              >데이터 스크레이핑 현황</span
+            >
+            <span class="stats-section-block-detail"
+              >마지막으로 업데이트 된 시간입니다.</span
+            >
+            2023-11-13T07:27:04.499+00:00
+            <span class="stats-section-block-detail"
+              >마지막으로 업데이트 된 결과입니다.</span
+            >
+            200,100 updated,0 upserted
+          </div>
+
           <div class="stats-section-block stats-total-view">
             <span class="stats-section-block-title">Total View</span>
             70,000
@@ -109,6 +128,7 @@
         <footer id="section-footer">made by Nuung</footer>
       </div>
     </div>
+    <script src="../global.js"></script>
     <script src="./index.js"></script>
   </body>
 </html>

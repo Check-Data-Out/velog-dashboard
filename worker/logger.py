@@ -46,9 +46,4 @@ def get_logger(name: str) -> Logger:
     return logger
 
 
-# # 로깅 예시
-# logger.debug("debug log!!!")
-# logger.info("info log!!!")
-# logger.warning("warning log!!!")
-# logger.error("error log!!!")
-# logger.critical("critical log!!!")
+LOGGER = get_logger("velog-dashboard-worker")

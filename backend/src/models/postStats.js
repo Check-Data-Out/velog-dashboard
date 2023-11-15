@@ -23,6 +23,47 @@ const PostStatsSchema = new mongoose.Schema({
     },
 }, { timestamps: true, versionKey: false, _id: false });
 
-const PostStats = mongoose.model("PostStats", PostStatsSchema);
 
-export { PostStats };
+// ==================== static methods ==================== //
+
+PostStatsSchema.statics.aggTotalByUserId = async function (userId) {
+
+    // 1. userId 에 해당하는 모든 PostStats 모델을 찾고
+    // 2. 해당 모델들의 totalViewCount 값을 모두 찾고 더한 값
+    // 3. 해당 모델들의 stats 의 오늘 viewCount 값을 모두 더한 값
+    // 4. 해당 모델들의 stats 의 마지막 요소의 likeCount 값을 모두 더한 값
+
+    try {
+        const aggreateResult = await this.aggregate([
+            // userId에 맞는 문서를 필터링
+            { $match: { userId } },
+
+            // 각 문서별로 필요한 작업
+            {
+                $project: {
+                    totalViewCount: 1, // totalViewCount 값을 포함
+                    lastViewCount: { $last: "$stats.viewCount" }, // stats 배열의 마지막 viewCount 값
+                    lastLikeCount: { $last: "$stats.likeCount" } // stats 배열의 마지막 likeCount 값
+                }
+            },
+
+            // 모든 문서에 대해 totalViewCount와 lastLikeCount를 더함
+            {
+                $group: {
+                    _id: null,
+                    totalViewCountSum: { $sum: "$totalViewCount" },
+                    todayViewCountSum: { $sum: "$lastViewCount" },
+                    totalLastLikeCountSum: { $sum: "$lastLikeCount" }
+                }
+            }
+        ]).exec();
+        return aggreateResult;
+    } catch (error) {
+        console.error(error);
+        throw new Error(error.message);
+    }
+}
+
+
+const PostStats = mongoose.model("PostStats", PostStatsSchema);
+export default PostStats;

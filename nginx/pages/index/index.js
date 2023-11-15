@@ -1,9 +1,41 @@
-document.getElementById('login-form').addEventListener('submit', function (event) {
+// ====================================================== //
+// Event
+// ====================================================== //
+
+
+
+// ====================================================== //
+// Main
+// ====================================================== //
+
+
+
+document.getElementById("login-form").addEventListener("submit", async (event) => {
     event.preventDefault();
-    var token = document.getElementById('token').value;
-    // 여기서 API 요청을 처리하거나, 실제로는 토큰 검증 후 dashboard.html로 리디렉션해야 합니다.
-    // 현재는 예시를 위해 바로 리디렉션합니다.
-    window.location.href = 'dashboard.html';
+    showSpinner();
+
+    const accessToken = document.getElementById("access-token").value;
+    const refreshToken = document.getElementById("refresh-token").value;
+
+    try {
+        const res = await postData("/user", { accessToken, refreshToken });
+        localStorage.setItem("userInfo", JSON.stringify(res));
+
+        // console.log(res);
+        Swal.close();
+        // window.location.href = "/dashboard";
+        window.location.href = "../dashboard/index.html";
+    } catch (error) {
+        // console.log(error);
+        await Swal.fire({
+            title: "로그인 실패",
+            text: error.message,
+            icon: "error",
+            confirmButtonText: "OK",
+            background: "#242424", // 혹은 다크 테마에 맞는 색상으로 설정
+            color: "#fff", // 텍스트 색상을 흰색으로 설정
+        });
+    }
 });
 
 

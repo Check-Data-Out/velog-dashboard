@@ -34,9 +34,11 @@ app.set("env", process.env.NODE_ENV);
 // ==================== API Routing Setting ==================== //
 
 import userInfoRouter from "./src/routes/userInfoRouter.js";
+import postStatsRouter from "./src/routes/postStatsRouter.js";
 
 // router mapping
 userInfoRouter(app, "/api/user");
+postStatsRouter(app, "/api/post");
 
 // ==================== Other Config Setting ==================== //
 

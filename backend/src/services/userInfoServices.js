@@ -1,9 +1,8 @@
 "use strict";
 
 import UserInfo from "../models/userInfo.js";
-import { PostStats } from "../models/postStats.js";
 
-export const createUserInfo = async (req, res) => {
+export const signUpORsignIn = async (req, res) => {
     const { body: { accessToken, refreshToken } } = req;
 
     try {
@@ -12,6 +11,8 @@ export const createUserInfo = async (req, res) => {
 
         // 존재하면?
         if (userChkOne) {
+            res.cookie("accessToken", accessToken, { httpOnly: true });
+            res.cookie("refreshToken", refreshToken, { httpOnly: true });
             return res.status(200).json({
                 message: "User logined successfully",
                 user: userChkOne
@@ -27,6 +28,8 @@ export const createUserInfo = async (req, res) => {
             // user token update
             const updateResult = await UserInfo.updateTokenByuserId(userChkTwo.userId, accessToken, refreshToken);
             if (updateResult.matchedCount && updateResult.modifiedCount) {
+                res.cookie("accessToken", accessToken, { httpOnly: true });
+                res.cookie("refreshToken", refreshToken, { httpOnly: true });
                 return res.status(200).json({
                     message: "User logined and updated successfully",
                     user: userChkTwo
@@ -41,6 +44,8 @@ export const createUserInfo = async (req, res) => {
 
         // 그래도 존재하지 않으면 신규 가입 -> 만료된 토큰일 가능성 있음, 그때 error
         const newUser = await UserInfo.createUser(accessToken, refreshToken);
+        res.cookie("accessToken", accessToken, { httpOnly: true });
+        res.cookie("refreshToken", refreshToken, { httpOnly: true });
         return res.status(201).json({
             message: "User created successfully",
             user: newUser
@@ -55,21 +60,51 @@ export const createUserInfo = async (req, res) => {
     }
 };
 
-export const getAllUserPosts = async (req, res) => {
+export const getUserAllInfo = async (req, res) => {
+
     try {
         const { params: { userId } } = req;
+
+        if (req.user.userId != userId) {
+            return res.status(404).json({ message: "Access Denied" });
+        }
+
         const userInfo = await UserInfo.findOne({ userId })
             .populate('posts')
             .exec();
         if (!userInfo) {
-            return res.status(404).send('User not found');
+            return res.status(404).json({
+                message: "User not found"
+            });
         }
-        return res.json({
-            message: "Get all posts from user successfully",
-            posts: userInfo.posts
+        return res.status(200).json({
+            message: "Get all user's info successfully",
+            userInfo
         });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: error.message });
     }
-}
+};
+
+export const getUserOnlyInfo = async (req, res) => {
+    try {
+        const { params: { userId } } = req;
+        if (req.user.userId != userId) {
+            return res.status(404).json({ message: "Access Denied" });
+        }
+        const userInfo = await UserInfo.findOne({ userId }, { posts: 0 });
+        if (!userInfo) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+        return res.status(200).json({
+            message: "Get all user's info successfully",
+            userInfo
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
