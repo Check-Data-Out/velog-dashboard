@@ -1,5 +1,6 @@
 :root {
     --main-velog-color: #20C997;
+    --sub-velog-color: #b0ffe7;
 }
 
 body {
@@ -72,7 +73,7 @@ li a:hover {
     background-color: #444;
 }
 
-ul li:last-child a {
+nav ul li:last-child a {
     font-size: 0.8rem;
     color: rgb(180, 180, 180);
 }
@@ -118,6 +119,31 @@ ul li:last-child a {
     color: var(--main-velog-color);
 }
 
+.stats-section-block-detail div {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.85rem;
+}
+
+#userInfo-lastScrapingAttemptTime,
+#userInfo-lastScrapingAttemptResult {
+    width: 100%;
+    text-align: center;
+}
+
+.stats-section-block-detail div span {
+    flex: 1 1 auto;
+    /* grow, shrink, basis */
+    width: 50%;
+    white-space: normal;
+    overflow-wrap: break-word;
+    /* 단어가 컨테이너를 넘어갈 경우 줄바꿈 */
+}
+
+.stats-section-block-detail div span:last-child {
+    color: var(--sub-velog-color);
+}
+
 .stats-section-block-info {
     font-size: 1.1rem;
 }
@@ -138,7 +164,7 @@ ul li:last-child a {
 
 #posts-list li {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-direction: row;
     background-color: rgba(33, 33, 33, 1);
     padding: 10px;

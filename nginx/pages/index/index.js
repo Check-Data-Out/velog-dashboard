@@ -1,25 +1,15 @@
+"use strict";
 // ====================================================== //
-// Event
-// ====================================================== //
-
-
-
-// ====================================================== //
-// Main
+// Events
 // ====================================================== //
 
-
-
-document.getElementById("login-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    showSpinner();
-
+const login = async () => {
     const accessToken = document.getElementById("access-token").value;
     const refreshToken = document.getElementById("refresh-token").value;
 
     try {
         const res = await postData("/user", { accessToken, refreshToken });
-        localStorage.setItem("userInfo", JSON.stringify(res));
+        localStorage.setItem("userInfo", JSON.stringify(res.user));
 
         // console.log(res);
         Swal.close();
@@ -36,10 +26,20 @@ document.getElementById("login-form").addEventListener("submit", async (event) =
             color: "#fff", // 텍스트 색상을 흰색으로 설정
         });
     }
-});
+};
 
 
+// ====================================================== //
+// Main
+// ====================================================== //
 
-document.getElementById("login-container-footer").addEventListener("click", () => {
-    window.location.href = "https://velog.io/@qlgks1";
-});
+const init = () => {
+    footerLink("login-container-footer");
+    document.getElementById("login-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        showSpinner();
+        await login();
+    });
+};
+
+init();

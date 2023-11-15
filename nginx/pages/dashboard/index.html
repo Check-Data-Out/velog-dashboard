@@ -37,31 +37,35 @@
             <span class="stats-section-block-title"
               >데이터 스크레이핑 현황</span
             >
-            <span class="stats-section-block-detail"
-              >마지막으로 업데이트 된 시간입니다.</span
+            <span
+              id="userInfo-lastScrapingAttemptTime"
+              class="stats-section-block-detail"
             >
-            2023-11-13T07:27:04.499+00:00
-            <span class="stats-section-block-detail"
-              >마지막으로 업데이트 된 결과입니다.</span
+              <!-- dynamic rendering -->
+            </span>
+            <span
+              id="userInfo-lastScrapingAttemptResult"
+              class="stats-section-block-detail"
             >
-            200,100 updated,0 upserted
+              <!-- dynamic rendering -->
+            </span>
           </div>
 
           <div class="stats-section-block stats-total-view">
             <span class="stats-section-block-title">Total View</span>
-            70,000
+            <span id="userInfo-totalViewCountSum"> - </span>
             <span class="stats-section-block-detail">총 조회수 합입니다.</span>
           </div>
           <div class="stats-section-block stats-today-view">
             <span class="stats-section-block-title">Today View</span>
-            50
+            <span id="userInfo-todayViewCountSum"> - </span>
             <span class="stats-section-block-detail"
               >오늘 조회수 합입니다.</span
             >
           </div>
           <div class="stats-section-block stats-total-like">
             <span class="stats-section-block-title">Total Like</span>
-            50
+            <span id="userInfo-totalLastLikeCountSum"> - </span>
             <span class="stats-section-block-detail"
               >총 좋아요 수 합입니다.</span
             >
@@ -71,55 +75,13 @@
         <!-- 게시글 section -->
         <section class="posts-section">
           <h2>List Of Posts</h2>
+          <img
+            src="https://cdn.dribbble.com/users/46633/screenshots/1185889/civchoice-loading-gifs800x600.gif"
+            alt="loading"
+            width="30%"
+          />
           <ul id="posts-list">
-            <li>
-              tewgdstrrgd
-              <span class="posts-list-today-veiw">
-                <img
-                  width="24"
-                  height="24"
-                  src="https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png"
-                  alt="external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya"
-                />
-                20
-              </span>
-            </li>
-            <li>
-              tewgdstrrgd
-              <span class="posts-list-today-veiw">
-                <img
-                  width="24"
-                  height="24"
-                  src="https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png"
-                  alt="external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya"
-                />
-                20
-              </span>
-            </li>
-            <li>
-              tewgdstrrgd
-              <span class="posts-list-today-veiw">
-                <img
-                  width="24"
-                  height="24"
-                  src="https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png"
-                  alt="sleepy-eyes"
-                />
-                20
-              </span>
-            </li>
-            <li>
-              tewgdstrrgd
-              <span class="posts-list-today-veiw">
-                <img
-                  width="24"
-                  height="24"
-                  src="https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png"
-                  alt="external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya"
-                />
-                20
-              </span>
-            </li>
+            <!-- dynamic rendering -->
           </ul>
         </section>
 
