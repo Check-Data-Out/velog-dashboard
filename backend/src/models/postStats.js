@@ -69,15 +69,28 @@ PostStatsSchema.statics.allPostsAggByUserId = async function (userId) {
     try {
         const docs = await this.find({ userId }).lean(); // 모든 문서를 가져옴
         const result = docs.map(doc => {
+
+            if (doc.stats.length <= 0) {
+                return {
+                    uuid: doc.uuid,
+                    title: doc.title,
+                    totalViewCount: doc.totalViewCount,
+                    lastViewCount: 0,
+                    updatedAt: doc.updatedAt.$date,
+                    url: doc.url,
+                    userId: doc.userId,
+                    isUp: false
+                };
+            }
+
+
             const lastStat = doc.stats[doc.stats.length - 1];
             const secondLastStat = doc.stats[doc.stats.length - 2];
 
             // 마지막과 그 이전 stats를 비교하여 isUp 결정
             doc.isUp = secondLastStat && lastStat && lastStat.viewCount > secondLastStat.viewCount;
 
-            // 필요하지 않은 필드를 제거하거나, 결과를 조정할 수 있습니다.
             return {
-                // _id: doc._id,
                 uuid: doc.uuid,
                 title: doc.title,
                 totalViewCount: doc.totalViewCount,

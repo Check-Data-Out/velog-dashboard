@@ -4,15 +4,16 @@ from datetime import datetime, timedelta
 import pytz
 from bson.objectid import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient
-from pymongo import UpdateOne
+from pymongo import InsertOne, UpdateOne
 from pymongo.results import BulkWriteResult
 
 from .models import PostStats, UserInfo
 
 
 class Repository:
-    def __init__(self, db_url: str) -> None:
+    def __init__(self, db_url: str, period_min: int) -> None:
         self.tz = pytz.timezone("Asia/Seoul")
+        self.period_min = period_min  # user find할때 업데이트 몇 분 전 user를 가져올 지
         self.__get_connection(db_url)
 
     def __get_connection(self, db_url: str):
@@ -34,7 +35,7 @@ class Repository:
 
     async def find_users(self) -> list[UserInfo]:
         # 현재 시간으로부터 15분 전 시간 계산
-        fifteen_minutes_ago = datetime.now(self.tz) - timedelta(minutes=1)
+        fifteen_minutes_ago = datetime.now(self.tz) - timedelta(minutes=self.period_min)
 
         coll = self.db["userinfos"]
         documents = await coll.find(
@@ -51,15 +52,52 @@ class Repository:
     async def create_or_update_poststats(
         self, posts_stats: list[PostStats]
     ) -> BulkWriteResult:
+        """
+        ### `PostStats` 를 신규 생성 또는 업데이트하는 함수, bulk로 동작
+        - `findOne` 이후 없으면 `insert`
+        - 이후 존재하고, 다를때 & stats 크롤링 성공했을때만 `updateOne`
+        """
         coll = self.db["poststats"]
-        operations = [
-            UpdateOne({"uuid": post.uuid}, {"$set": post.model_dump()}, upsert=True)
-            for post in posts_stats
-        ]
-        result = await coll.bulk_write(operations)
-        return result
+        operations = list()
+        for post in posts_stats:
+            # Try to find the post by uuid.
+            existing_post = await coll.find_one({"uuid": post.uuid})
 
-    async def update_userinfo(
+            # If it doesn't exist, we prepare to insert it.
+            if not existing_post:
+                operations.append(InsertOne(post.model_dump()))
+            else:
+                # If it exists, we compare the data and prepare an update if there is a difference.
+                post_model_dict = post.model_dump()
+                if post_model_dict == existing_post:
+                    continue
+
+                if not post_model_dict.get("stats", []):
+                    continue
+
+                operations.append(
+                    UpdateOne({"uuid": post.uuid}, {"$set": post.model_dump()})
+                )
+
+        # If we have any operations to perform, we do them all at once.
+        if operations:
+            result = await coll.bulk_write(operations)
+            return result
+        else:
+            return BulkWriteResult(
+                {
+                    "writeErrors": [],
+                    "writeConcernErrors": [],
+                    "nInserted": 0,
+                    "nUpserted": 0,
+                    "nMatched": 0,
+                    "nModified": 0,
+                    "nRemoved": 0,
+                },
+                True,
+            )
+
+    async def update_userinfo_success(
         self, user: UserInfo, posts_uuid_list: list[str], result_msg: str
     ):
         coll_post = self.db["poststats"]
@@ -71,6 +109,20 @@ class Repository:
             {
                 "$set": {
                     "posts": post_obj_ids,
+                    "lastScrapingAttemptResult": result_msg,
+                    "updatedAt": datetime.now(self.tz),
+                    "lastScrapingAttemptTime": datetime.now(self.tz),
+                }
+            },
+        )
+        return result
+
+    async def update_userinfo_fail(self, user: UserInfo, result_msg: str):
+        coll = self.db["userinfos"]
+        result = await coll.update_one(
+            {"userId": user.userId},
+            {
+                "$set": {
                     "lastScrapingAttemptResult": result_msg,
                     "updatedAt": datetime.now(self.tz),
                     "lastScrapingAttemptTime": datetime.now(self.tz),

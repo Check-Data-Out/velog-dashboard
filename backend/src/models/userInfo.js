@@ -46,7 +46,7 @@ class TokenError extends Error {
 }
 
 
-userInfoSchema.statics.fetch_user_info = async function (accessToken, refreshToken) {
+userInfoSchema.statics.fetchUserInfo = async function (accessToken, refreshToken) {
     const res = await axios.post("https://v3.velog.io/graphql", {
         query: `
             query currentUser {
@@ -75,7 +75,7 @@ userInfoSchema.statics.fetch_user_info = async function (accessToken, refreshTok
 
 userInfoSchema.statics.createUser = async function (accessToken, refreshToken) {
     try {
-        const res = await this.fetch_user_info(accessToken, refreshToken);
+        const res = await this.fetchUserInfo(accessToken, refreshToken);
         const userId = res.data.data.currentUser.username;
         const email = res.data.data.currentUser.email;
         const user = new this({ accessToken, refreshToken, userId, email });

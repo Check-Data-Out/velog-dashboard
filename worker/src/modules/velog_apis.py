@@ -88,8 +88,14 @@ async def fetch_stats(total_post_id_dict: dict, actoken, reftoken):
             for post_id in total_post_id_dict
         ]
         stats_results = await asyncio.gather(*tasks)
+
+        # 그룹 & 비동기 러닝 결과 묶어서 데이터 dump to dict
+        # 여기서 fail 건 데이터 제대로 처리할 필요 있음
         for post_id, result in zip(total_post_id_dict.keys(), stats_results):
             try:
+                if not result:
+                    raise Exception("fail to request")
+
                 total_post_id_dict[post_id]["total"] = result["data"]["getStats"][
                     "total"
                 ]

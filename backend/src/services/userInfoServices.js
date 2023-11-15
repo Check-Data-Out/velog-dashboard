@@ -2,6 +2,11 @@
 
 import UserInfo from "../models/userInfo.js";
 
+const setAuthCookie = (res, accessToken, refreshToken) => {
+    res.cookie("accessToken", accessToken);
+    res.cookie("refreshToken", refreshToken);
+};
+
 export const signUpORsignIn = async (req, res) => {
     const { body: { accessToken, refreshToken } } = req;
 
@@ -11,8 +16,7 @@ export const signUpORsignIn = async (req, res) => {
 
         // 존재하면?
         if (userChkOne) {
-            res.cookie("accessToken", accessToken);
-            res.cookie("refreshToken", refreshToken);
+            setAuthCookie(res, accessToken, refreshToken);
             return res.status(200).json({
                 message: "User logined successfully",
                 user: userChkOne
@@ -21,15 +25,14 @@ export const signUpORsignIn = async (req, res) => {
 
         // 존재하지 않으면, fetch 때리고 userId를 찾고 다시 찾아봄
         // 만약 이렇게 찾으면 기존의 token을 업데이트 해줘야 함
-        const userCheckData = await UserInfo.fetch_user_info(accessToken, refreshToken);
+        const userCheckData = await UserInfo.fetchUserInfo(accessToken, refreshToken);
         const userChkTwo = await UserInfo.findByuserId(userCheckData.data.data.currentUser.username);
 
         if (userChkTwo) {
             // user token update
             const updateResult = await UserInfo.updateTokenByuserId(userChkTwo.userId, accessToken, refreshToken);
             if (updateResult.matchedCount && updateResult.modifiedCount) {
-                res.cookie("accessToken", accessToken);
-                res.cookie("refreshToken", refreshToken);
+                setAuthCookie(res, accessToken, refreshToken);
                 return res.status(200).json({
                     message: "User logined and updated successfully",
                     user: userChkTwo
@@ -44,8 +47,7 @@ export const signUpORsignIn = async (req, res) => {
 
         // 그래도 존재하지 않으면 신규 가입 -> 만료된 토큰일 가능성 있음, 그때 error
         const newUser = await UserInfo.createUser(accessToken, refreshToken);
-        res.cookie("accessToken", accessToken);
-        res.cookie("refreshToken", refreshToken);
+        setAuthCookie(res, accessToken, refreshToken);
         return res.status(201).json({
             message: "User created successfully",
             user: newUser

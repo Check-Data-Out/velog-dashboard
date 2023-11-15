@@ -81,6 +81,10 @@ const updatePostList = async () => {
         loadingImg.remove();
     }
     document.getElementById("posts-list").innerHTML = tempInnerHtml;
+    document.querySelector("section.posts-section > h2").innerHTML = `
+        List Of [ ${result.length} ] Posts
+        <span>(total / today)</span>
+    `;
     return res;
 };
 
