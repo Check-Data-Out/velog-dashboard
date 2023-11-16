@@ -38,6 +38,5 @@ jobs:
           cd ./worker
           mkdir logs
           python main.py
+          cat ./logs/logfile.log
 
-      - name: Print log file
-        run: cat ./worker/logs/logfile.log
