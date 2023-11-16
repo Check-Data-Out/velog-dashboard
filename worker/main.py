@@ -11,6 +11,7 @@ from src.modules.velog_apis import fetch_posts, fetch_stats
 load_dotenv()
 DB_URL = os.getenv("DB_URL")
 PERIOD_MIN = int(os.getenv("PERIOD_MIN"))
+WORKER_ENV = os.getenv("WORKER_ENV")
 
 if not DB_URL:
     raise Exception("There is no DB_URL value in env value")
