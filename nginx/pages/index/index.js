@@ -13,8 +13,8 @@ const login = async () => {
 
         // console.log(res);
         Swal.close();
-        // window.location.href = "/dashboard";
-        window.location.href = "../dashboard/index.html";
+        window.location.href = "/dashboard";
+        // window.location.href = "../dashboard/index.html";
     } catch (error) {
         await Swal.fire({
             title: "로그인 실패",
