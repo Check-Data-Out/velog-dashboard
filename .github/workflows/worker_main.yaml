@@ -29,13 +29,11 @@ jobs:
           pip install aiohttp-retry
           pip install python-dotenv
 
-      - name: Change to the script directory
-        run: cd ./worker
-
-      - name: Execute data scrapping
+      - name: Execute Python script in the worker directory
         env:
           pythonLocation: /opt/hostedtoolcache/Python/3.10.13/x64
           DB_URL: ${{ secrets.DB_URL }}
           PERIOD_MIN: ${{ secrets.PERIOD_MIN }}
-
-        run: python main.py
+        run: |
+          cd ./worker
+          python main.py
