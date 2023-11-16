@@ -1,11 +1,11 @@
-name: run main.py
+name: run token_refresh.py
 
 on:
   push:
     branches:
       - main
   schedule:
-    - cron: "*/15 * * * *" # 15분 마다
+    - cron: "*/20 * * * *" # 20분 마다
 
 jobs:
   build:
@@ -38,6 +38,5 @@ jobs:
         run: |
           cd ./worker
           mkdir logs
-          python main.py
-          cat ./logs/velog-dashboard-worker.log
-
+          python token_refresh.py
+          cat ./logs/velog-dashboard-token-worker.log
