@@ -1,6 +1,6 @@
 
-[![Worker Main](https://github.com/Check-Data-Out/velog-dashboard/actions/workflows/worker_main.yml/badge.svg?branch=main)](https://github.com/Check-Data-Out/velog-dashboard/actions/workflows/worker_main.yml)
-[![Worker Main](https://github.com/Check-Data-Out/velog-dashboard/actions/workflows/worker_token_refresh.yml/badge.svg?branch=main)](https://github.com/Check-Data-Out/velog-dashboard/actions/workflows/worker_token_refresh.yml)
+[![Worker Main](https://github.com/Check-Data-Out/velog-dashboard/actions/workflows/worker_main.yaml/badge.svg?branch=main)](https://github.com/Check-Data-Out/velog-dashboard/actions/workflows/worker_main.yaml)
+[![Worker Main](https://github.com/Check-Data-Out/velog-dashboard/actions/workflows/worker_token_refresh.yaml/badge.svg?branch=main)](https://github.com/Check-Data-Out/velog-dashboard/actions/workflows/worker_token_refresh.yaml)
 
 ![](./nginx/pages/imgs/velog-dashboard-thumnail.png)
 
