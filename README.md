@@ -1,6 +1,7 @@
 # Velog Dashboard Project
 
-> velog dashboard project, ***velog의 모든 게시글, 통계 데이터를 한 눈에 편하게 확인하자!!*** - https://velog-dashboard.kro.kr/
+> velog dashboard project, ***velog의 모든 게시글, 통계 데이터를 한 눈에 편하게 확인하자!!*** </br>
+> https://velog-dashboard.kro.kr/
 
 ## 1. HOW TO USE
 

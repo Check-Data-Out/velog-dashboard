@@ -12,7 +12,7 @@ body, html {
 .login-container {
     position: relative;
     /* 자식 요소의 절대 위치를 기준으로 함 */
-    height: 30%;
+    height: 36%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -52,6 +52,13 @@ body, html {
     cursor: pointer;
 }
 
+.login-container-footer-help {
+    font-size: 0.8rem;
+    color: inherit;
+    text-decoration: none;
+    font-weight: bolder;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -77,4 +84,26 @@ button {
 
 button:hover {
     background: #666;
+}
+
+/* ====================================================== */
+/* MOBILE */
+/* ====================================================== */
+
+@media only screen and (max-width: 600px) {
+
+    /* 화면 너비가 600px 이하일 때 적용할 스타일을 여기에 작성합니다. */
+    .login-container {
+        height: 350px;
+    }
+
+}
+
+@media only screen and (max-width: 350px) {
+
+    /* 화면 너비가 600px 이하일 때 적용할 스타일을 여기에 작성합니다. */
+    .login-container {
+        height: 30%;
+    }
+
 }
