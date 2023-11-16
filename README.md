@@ -21,7 +21,9 @@
 
 7. post 에 있는 아이콘, ![](https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png) 이미지는 전날 대비 상승, ![](https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png) 이미지는 전날 대비 하락 입니다!
 
-8. 최초 로그인 이후, 다시 로그인 시도 하실때 `token issue` 로 고통받으신다면, 우측 하단에 채널톡으로 남겨주시면 제가 핸들링하겠습니다,, (아직 BETA 라 해당 부분은 조금 문제가 있습니다ㅠㅠ)
+8. 다시 접속하실땐 login (index) page를 거치지 말고, 바로 https://velog-dashboard.kro.kr/dashboard 로 접근하면 편합니다!
+
+9. 최초 로그인 이후, 다시 로그인 시도 하실때 `token issue` 로 고통받으신다면, 우측 하단에 채널톡으로 남겨주시면 제가 핸들링하겠습니다,, (아직 BETA 라 해당 부분은 조금 문제가 있습니다ㅠㅠ)
 
 ## 2. token 활용 사항과 사용하는 velog graphQL list
 
@@ -49,7 +51,7 @@
 
 ---
 
-## 3. Getting Started
+## 3. Getting Started (local에서 직접 구축하기)
 
 1. 먼저 mongodb atlas connction info가 필요합니다. - https://www.mongodb.com/atlas/database
 2. `backend` 디렉토리로 이동합니다.
