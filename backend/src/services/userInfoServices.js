@@ -3,8 +3,8 @@
 import UserInfo from "../models/userInfo.js";
 
 const setAuthCookie = async (res, accessToken, refreshToken) => {
-    res.cookie("accessToken", accessToken);
-    res.cookie("refreshToken", refreshToken);
+    res.cookie("accessToken", accessToken, { httpOnly: true, secure: true });
+    res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
 };
 
 export const signUpORsignIn = async (req, res) => {
