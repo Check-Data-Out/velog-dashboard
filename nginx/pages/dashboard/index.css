@@ -9,6 +9,10 @@ body {
     color: white;
 }
 
+/* ====================================================== */
+/* 네비게이션바 관련 CSS */
+/* ====================================================== */
+
 .sidebar {
     background-color: #222;
     width: 200px;
@@ -43,6 +47,10 @@ body {
 .navbar-toggle:hover {
     background: var(--main-velog-color);
 }
+
+/* ====================================================== */
+/* 메인과 메인섹션 & Block 관련 CSS */
+/* ====================================================== */
 
 .main-content {
     transition: margin-left 0.3s ease;
@@ -119,7 +127,7 @@ nav ul li:last-child a {
     color: var(--main-velog-color);
 }
 
-.stats-section-block-detail div {
+.stats-section-block-detail>div {
     display: flex;
     flex-direction: row;
     font-size: 0.85rem;
@@ -163,6 +171,10 @@ nav ul li:last-child a {
     color: var(--main-velog-color);
 }
 
+/* ====================================================== */
+/* 동적으로 랜더링되는 post list 관련 CSS */
+/* ====================================================== */
+
 #posts-list {
     width: 100%;
 }
@@ -178,6 +190,30 @@ nav ul li:last-child a {
     border-radius: 15px;
 }
 
+.posts-list-graph {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bolder;
+    color: var(--main-velog-color);
+}
+
+.posts-list-graph:hover {
+    background-color: #444;
+}
+
+.posts-list-graph::after {
+    content: "그래프 ▼";
+}
+
+.graph-active::after {
+    content: "그래프 ▲";
+    padding: 6px;
+    border-radius: 15px;
+    background-color: var(--main-velog-color);
+    color: white;
+}
+
 .posts-list-today-veiw {
     display: flex;
     align-items: center;
@@ -187,6 +223,68 @@ nav ul li:last-child a {
 .posts-list-today-veiw img {
     margin-right: 5px;
 }
+
+/* ====================================================== */
+/* 동적으로 랜더링되는 차트 관련 CSS */
+/* ====================================================== */
+.post-graph-div-date {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+/* 모든 버튼과 링크에 대한 스타일링 */
+.post-graph-div-btn {
+    background-color: var(--main-velog-color);
+    color: white;
+    padding: 7px;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 버튼과 링크에 대한 호버 효과 */
+.post-graph-div-btn:hover {
+    background-color: #666;
+    color: var(--main-velog-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+/* 날짜 선택기 스타일링 */
+.post-graph-div-date input[type="date"] {
+    background-color: #333;
+    color: #ccc;
+    border: 1px solid #444;
+    padding: 5px;
+    border-radius: 4px;
+    margin: 5px;
+    font-size: 0.8rem;
+}
+
+/* 입력 필드에 대한 호버 및 포커스 효과 */
+.post-graph-div-date input[type="date"]:hover,
+.post-graph-div-date input[type="date"]:focus {
+    border-color: var(--main-velog-color);
+    /* 호버 및 포커스시 테두리 색상 */
+    outline: none;
+    /* 기본 아웃라인 제거 */
+}
+
+/* 레이블 스타일링 */
+.post-graph-div-date label {
+    font-size: 0.8rem;
+    color: #ccc;
+    margin-bottom: 5px;
+}
+
+
+/* ====================================================== */
+/* 그 외 & footer 관련 CSS */
+/* ====================================================== */
+
 
 hr {
     border: 1px solid #444;
@@ -200,10 +298,9 @@ hr {
 }
 
 
-
-/* ==================================================== */
+/* ====================================================== */
 /* MOBILE */
-/* ==================================================== */
+/* ====================================================== */
 
 @media only screen and (max-width: 600px) {
 
@@ -211,12 +308,24 @@ hr {
     .stats-section {
         flex-direction: column;
     }
+
+    .posts-list-graph::after {
+        content: "▼";
+    }
+
+    .graph-active::after {
+        content: "▲";
+        padding: 6px;
+        border-radius: 15px;
+        background-color: var(--main-velog-color);
+        color: white;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
 
     /* 화면 너비가 1200px 이하일 때 적용할 스타일을 여기에 작성합니다. */
     #posts-list li a {
-        max-width: 740px;
+        max-width: 650px;
     }
 }

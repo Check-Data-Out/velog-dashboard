@@ -33,6 +33,17 @@ PostStatsSchema.statics.aggTotalByUserId = async function (userId) {
     // 3. 해당 모델들의 stats 의 오늘 viewCount 값을 모두 더한 값
     // 4. 해당 모델들의 stats 의 마지막 요소의 likeCount 값을 모두 더한 값
 
+    // 오늘 날짜 설정
+    // UTC 기준으로 오늘 날짜 설정
+    const KST_OFFSET = 9 * 60 * 60 * 1000; // 한국 시간대는 UTC+9
+    const now = new Date();
+    let today = new Date(now.getTime() + KST_OFFSET); // UTC 시간에 한국 시간대를 적용
+
+    // 다시 문자열로 년월일 문자열로 바꾸고, 다시 문자열을 date object로 바꾸고
+    // 시 분 초 0으로, UTC 시간대로 만들기
+    const dateString = today.toISOString().split("T")[0];
+    today = new Date(dateString);
+
     try {
         const aggreateResult = await this.aggregate([
             // userId에 맞는 문서를 필터링
@@ -42,17 +53,33 @@ PostStatsSchema.statics.aggTotalByUserId = async function (userId) {
             {
                 $project: {
                     totalViewCount: 1, // totalViewCount 값을 포함
-                    lastViewCount: { $last: "$stats.viewCount" }, // stats 배열의 마지막 viewCount 값
+                    todayViews: {
+                        // 오늘 날짜에 해당하는 stats 요소 필터링
+                        $filter: {
+                            input: "$stats",
+                            as: "stat",
+                            cond: { $eq: ["$$stat.date", today] }
+                        }
+                    },
                     lastLikeCount: { $last: "$stats.likeCount" } // stats 배열의 마지막 likeCount 값
                 }
             },
 
-            // 모든 문서에 대해 totalViewCount와 lastLikeCount를 더함
+            // 오늘 날짜의 viewCount를 합산
+            {
+                $project: {
+                    totalViewCount: 1,
+                    todayViewCount: { $sum: "$todayViews.viewCount" },
+                    lastLikeCount: 1
+                }
+            },
+
+            // 모든 문서에 대해 totalViewCount, todayViewCount, lastLikeCount를 더함
             {
                 $group: {
                     _id: null,
                     totalViewCountSum: { $sum: "$totalViewCount" },
-                    todayViewCountSum: { $sum: "$lastViewCount" },
+                    todayViewCountSum: { $sum: "$todayViewCount" },
                     totalLastLikeCountSum: { $sum: "$lastLikeCount" }
                 }
             }
@@ -82,7 +109,6 @@ PostStatsSchema.statics.allPostsAggByUserId = async function (userId) {
                     isUp: false
                 };
             }
-
 
             const lastStat = doc.stats[doc.stats.length - 1];
             const secondLastStat = doc.stats[doc.stats.length - 2];

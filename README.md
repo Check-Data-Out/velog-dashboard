@@ -1,6 +1,6 @@
 # Velog Dashboard Project
 
-> 가나다라
+> velog dashboard
 
 ## Getting Started
 

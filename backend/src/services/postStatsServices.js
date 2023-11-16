@@ -7,7 +7,7 @@ export const totalStats = async (req, res) => {
     try {
         const { params: { userId } } = req;
         if (req.user.userId != userId) {
-            return res.status(404).json({ message: "Access Denied" });
+            return res.status(403).json({ message: "Access Denied" });
         }
 
         const result = await PostStats.aggTotalByUserId(userId);
@@ -26,7 +26,7 @@ export const getAllPostsWithTotal = async (req, res) => {
     try {
         const { params: { userId }, query: { sortBy, order } } = req;
         if (req.user.userId != userId) {
-            return res.status(404).json({ message: "Access Denied" });
+            return res.status(403).json({ message: "Access Denied" });
         }
 
         // 정렬 함수를 정의
@@ -57,4 +57,26 @@ export const getAllPostsWithTotal = async (req, res) => {
         console.error(error);
         return res.status(500).json({ message: error.message });
     }
-}
+};
+
+
+export const getPostByUUID = async (req, res) => {
+    try {
+        const { query: { uuid } } = req;
+        if (!uuid) {
+            return res.status(404).json({ message: "UUID cannot be empty." });
+        }
+
+        const post = await PostStats.findOne({ uuid }, { _id: 0, uuid: 0 });
+        if (req.user.userId != post.userId) {
+            return res.status(403).json({ message: "Access Denied" });
+        }
+        return res.status(200).json({
+            message: "User's Total Posts with total",
+            result: post
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: error.message });
+    }
+};

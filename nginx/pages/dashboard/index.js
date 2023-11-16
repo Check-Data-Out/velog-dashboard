@@ -1,5 +1,103 @@
 "use strict";
 // ====================================================== //
+// Functions
+// ====================================================== //
+
+// Chart.js로 그래프 그리기
+const drawPostChart = async (data, uuid) => {
+    // Chart.js에 넘겨줄 데이터 형식으로 변환
+    const labels = data.map(item => item.date.split("T")[0]);
+    const viewData = data.map(item => item.viewCount);
+    const likeData = data.map(item => item.likeCount);
+
+    // 차트 생성
+    const ctx = document.getElementById(uuid).getContext("2d");
+    return new Chart(ctx, {
+        type: "line", // 라인 차트 사용
+        data: {
+            labels: labels, // x축 데이터
+            datasets: [{
+                label: "View Count",
+                data: viewData, // 조회수 데이터
+                backgroundColor: "rgba(255, 99, 132, 0.2)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 1
+            }, {
+                label: "Like Count",
+                data: likeData, // 좋아요 수 데이터
+                backgroundColor: "rgba(54, 162, 235, 0.2)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: "time",
+                    adapters: {
+                        date: {
+                            lib: luxon // 여기서 Luxon 어댑터를 사용하도록 지정
+                        }
+                    },
+                    time: {
+                        unit: "day",
+                        displayFormats: {
+                            day: "yyyy-MM-dd"
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: "Date"
+                    }
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+};
+
+
+// 그려진 chart에 날짜 필터링해서 다시 랜더링하기
+const drawFilteredChart = (chart, data, startDateValue, endDateValue) => {
+    // 날짜 값이 없으면 업데이트하지 않습니다.
+    if (!startDateValue || !endDateValue) return;
+
+    // 데이터 필터링
+    const startDate = new Date(startDateValue); // ex) "2023-11-01"
+    const endDate = new Date(endDateValue); // ex) "2023-11-02"
+    endDate.setDate(endDate.getDate() + 1); // endDate를 다음 날 자정으로 설정
+
+
+    const filteredData = data.filter(item => {
+        const itemDate = new Date(item.date);
+        return itemDate >= startDate && itemDate < endDate;
+    });
+    console.log(filteredData);
+
+    chart.data.labels = filteredData.map(item => item.date.split("T")[0]);
+    const filteredviewData = filteredData.map(item => item.viewCount);
+    const filteredlikeData = filteredData.map(item => item.likeCount);
+    chart.data.datasets = [{
+        label: "View Count",
+        data: filteredviewData, // 조회수 데이터
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 1
+    }, {
+        label: "Like Count",
+        data: filteredlikeData, // 좋아요 수 데이터
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1
+    }];
+    console.log(chart.data.datasets);
+    chart.update();
+};
+
+
+// ====================================================== //
 // Events
 // ====================================================== //
 
@@ -35,6 +133,7 @@ const updateUserInfo = async () => {
     return res;
 };
 
+
 const updateUserStats = async () => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const res = await getData(`/post/total/${userInfo.userId}`, {}, { accessToken: userInfo.accessToken, refreshToken: userInfo.refreshToken });
@@ -51,6 +150,7 @@ const updateUserStats = async () => {
     return res;
 };
 
+
 const updatePostList = async () => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const { sortBy, order } = JSON.parse(localStorage.getItem("postsSort"));
@@ -62,8 +162,12 @@ const updatePostList = async () => {
         const ele = result[i];
         tempInnerHtml += `
             <li>
-                <a href="${ele["url"]}">${ele["title"]}</a>
+                <a href="${ele["url"]}">
+                    ${ele["title"]}
+                </a>
                 <span class="posts-list-today-veiw">
+                    <span class="posts-list-graph" data-post-uuid="${ele["uuid"]}" onclick="updatePostListGraph(event)">
+                    </span>
                     ${ele["totalViewCount"]} / ${ele["lastViewCount"]}&nbsp;
                     <img
                         width="24"
@@ -73,6 +177,7 @@ const updatePostList = async () => {
                     />
                 </span>
             </li>
+            <div id="post-graph-div-${ele["uuid"]}" class="posts-list-graph-content"></div>
         `;
     }
 
@@ -86,6 +191,55 @@ const updatePostList = async () => {
         <span>(total / today)</span>
     `;
     return res;
+};
+
+
+// updatePostList 랜더링된 span.posts-list-graph 에 할당된 이벤트
+// uuid 값으로 해당 post stats를 모두 가져와 시계열 데이터를 그래프로 시각화 - https://www.chartjs.org/
+const updatePostListGraph = async (event) => {
+
+    const graphPostSpan = event.target;
+    graphPostSpan.classList.toggle("graph-active");
+    const uuid = graphPostSpan.getAttribute("data-post-uuid");
+
+    // 이미 그래프가 존재하면 삭제
+    if (document.getElementById(uuid)) {
+        document.getElementById(`post-graph-div-${uuid}`).innerHTML = "";
+        return;
+    }
+
+    // 그래프에 필요한 데이터 가져오기
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const res = await getData(`/post`, { uuid }, { accessToken: userInfo.accessToken, refreshToken: userInfo.refreshToken });
+    const data = res.result?.stats;
+    if (!data) {
+        return;
+    }
+
+    // 그래프 랜더링
+    document.getElementById(`post-graph-div-${uuid}`).innerHTML = `
+        <div class="post-graph-div-date">
+            <!-- 시작 날짜 선택기 -->
+            <label for="${uuid}-startDate">시작 날짜:</label>
+            <input type="date" id="${uuid}-startDate">
+            
+            <!-- 종료 날짜 선택기 -->
+            <label for="${uuid}-endDate">종료 날짜:</label>
+            <input type="date" id="${uuid}-endDate">
+
+            <button id="${uuid}-post-graph-update-btn" class="post-graph-div-btn">refresh</button>
+        </div>
+        <canvas id="${uuid}" width="400" height="200"></canvas>
+    `;
+    const chart = await drawPostChart(data, uuid); // 랜더링된 char object
+
+    // 동적으로 이벤트 바인딩, char object때문
+    document.getElementById(`${uuid}-post-graph-update-btn`).addEventListener("click", (event) => {
+        event.preventDefault();
+        const startDateValue = document.getElementById(`${uuid}-startDate`).value;
+        const endDateValue = document.getElementById(`${uuid}-endDate`).value;
+        drawFilteredChart(chart, data, startDateValue, endDateValue);
+    });
 };
 
 

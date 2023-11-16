@@ -55,14 +55,14 @@ const postData = async (endPoint = "", data = {}, tokens = {}) => {
 const getData = async (endPoint = "", queryString = {}, tokens = {}) => {
     // url query string 파싱
     let URL = `${DEFAULT_URL}${endPoint}`;
-    if (queryString) {
+    if (Object.keys(queryString).length) {
         const params = new URLSearchParams(queryString);
         URL = `${URL}?${params.toString()}`;
     }
     const headers = {
         "Content-Type": "application/json", // "Content-Type": "application/x-www-form-urlencoded",
-        ...(tokens.accessToken && { 'access-token': tokens.accessToken }),
-        ...(tokens.refreshToken && { 'refresh-token': tokens.refreshToken }),
+        ...(tokens.accessToken && { "access-token": tokens.accessToken }),
+        ...(tokens.refreshToken && { "refresh-token": tokens.refreshToken }),
     };
     // 옵션 기본 값은 *로 강조
     const res = await fetch(`${URL}`, {
