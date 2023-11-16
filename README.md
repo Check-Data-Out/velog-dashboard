@@ -18,7 +18,9 @@
 
 6. 영상으로 보기! -> https://youtu.be/Ab8c4kmGhQA
 
-7. 최초 로그인 이후, 다시 로그인 시도 하실때 `token issue` 로 고통받으신다면, 우측 하단에 채널톡으로 남겨주시면 제가 핸들링하겠습니다,, (아직 BETA 라 해당 부분은 조금 문제가 있습니다ㅠㅠ)
+7. post 에 있는 아이콘, ![](https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png) 이미지는 전날 대비 상승, ![](https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png) 이미지는 전날 대비 하락 입니다!
+
+8. 최초 로그인 이후, 다시 로그인 시도 하실때 `token issue` 로 고통받으신다면, 우측 하단에 채널톡으로 남겨주시면 제가 핸들링하겠습니다,, (아직 BETA 라 해당 부분은 조금 문제가 있습니다ㅠㅠ)
 
 ## 2. token 활용 사항과 사용하는 velog graphQL list
 
