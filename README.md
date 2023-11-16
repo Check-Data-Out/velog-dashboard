@@ -68,3 +68,4 @@
 - [mongodb cloud - atlas](https://www.mongodb.com/atlas/database)
 - [poetry 간단 사용법](https://velog.io/@qlgks1/python-poetry-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-project-initializing-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0)
 - [aiohttp_retry](https://github.com/inyutin/aiohttp_retry)
+- 도커라이징 없이, nginx 온프램 배포시 index 페이지를 위해 `ln -s ./index/index.html index.html`
