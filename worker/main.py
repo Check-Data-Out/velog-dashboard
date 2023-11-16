@@ -94,6 +94,6 @@ async def run_periodically():
 
 
 # 이벤트 루프를 사용하여 run_periodically 함수 실행
-asyncio.run(run_periodically())
+# asyncio.run(run_periodically())
 
-# asyncio.run(main())
+asyncio.run(main())
