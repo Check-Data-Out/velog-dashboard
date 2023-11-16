@@ -1,7 +1,7 @@
 import asyncio
 
 from aiohttp_retry import ExponentialRetry, RetryClient
-from logger import LOGGER as log
+from logger import MAIN_LOGGER as log
 
 
 def get_header(access_token: str, refresh_token: str) -> dict:
