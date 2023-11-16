@@ -30,7 +30,7 @@ jobs:
           pip install python-dotenv
 
       - name: Change to the script directory
-        run: cd velog-dashboard/worker
+        run: cd ./worker
 
       - name: Execute data scrapping
         env:
