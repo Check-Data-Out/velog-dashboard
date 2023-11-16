@@ -1,10 +1,18 @@
 # Velog Dashboard Project
 
-> velog dashboard
+> velog dashboard project, ***velog의 모든 게시글, 통계 데이터를 한 눈에 편하게 확인하자!!***
 
 ## 1. HOW TO USE
 
+1. https://velog.io/ 에 접속해서 내 벨로그에 들어간다 (ex - https://velog.io/@qlgks1)
 
+2. 개발자 도구 -> 어플리케이션 -> 쿠키 -> velog에서 `access_token` 값과 `refresh_token` 값을 확인한다!
+
+3. 해당 값을 가지고 login을 한다!
+
+4. ***`데이터 스크레이핑 batch` 가 최대 10분 텀으로 루프를 돕니다.*** 그렇기 때문에 최초 데이터 이니셜라이징에 시간이 소요될 수 있습니다. 
+
+5. 특히 게시글이 많은 경우, 오래된 게시글일 경우, retry로 데이터 스크레이핑을 해도 limit에 걸리는 경우가 있습니다. 이 경우 다음 데이터 스크레이핑 사이클에서 update가 되니, 기다려주시면 너무 감사드립니다. 
 
 
 ## 2. token 활용 사항과 사용하는 velog graphQL list
