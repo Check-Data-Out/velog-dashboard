@@ -16,10 +16,9 @@ const login = async () => {
         // window.location.href = "/dashboard";
         window.location.href = "../dashboard/index.html";
     } catch (error) {
-        // console.log(error);
         await Swal.fire({
             title: "로그인 실패",
-            text: error.message,
+            text: `${error.message}, 만료된 토큰 이슈가 계속 발생하면 오른쪽 하단을 통해 바로 문의 주세요 도와드릴게요!!`,
             icon: "error",
             confirmButtonText: "OK",
             background: "#242424", // 혹은 다크 테마에 맞는 색상으로 설정

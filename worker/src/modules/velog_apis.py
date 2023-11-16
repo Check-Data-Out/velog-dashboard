@@ -120,6 +120,42 @@ async def fetch_stats(total_post_id_dict: dict, actoken, reftoken):
         return total_post_id_dict
 
 
+async def get_cookie_from_one_stats_api(uuid: str, actoken, reftoken) -> dict:
+    """
+    ### 특정 post의 통계 하나만 가져오기
+    - token refresh 목적의 함수
+    """
+    retry_options = ExponentialRetry(attempts=3)
+    async with RetryClient(retry_options=retry_options) as session:
+        query = """
+        query GetStats($post_id: ID!) {
+            getStats(post_id: $post_id) {
+                total
+                count_by_day {
+                    count
+                    day
+                }
+            }
+        }"""
+        variables = {"post_id": uuid}
+        payload = {"query": query, "variables": variables, "operationName": "GetStats"}
+        headers = get_header(actoken, reftoken)
+        async with session.post(
+            "https://v2cdn.velog.io/graphql",
+            json=payload,
+            headers=headers,
+        ) as response:
+            cookie_dict = dict()
+            try:
+                # 응답에서 쿠키를 가져옵니다.
+                cookies = response.cookies
+                # 쿠키를 딕셔너리로 변환합니다.
+                cookie_dict = {cookie.key: cookie.value for cookie in cookies.values()}
+            except Exception as e:
+                log.error(f"get_cookie_from_one_stats_api >> {uuid}, error >> {e}")
+            return cookie_dict
+
+
 async def fetch_posts(user_name: str):
     """
     ### 모든 페이지의 포스트를 가져오기 위해 비동기로 페이지를 반복.

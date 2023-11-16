@@ -2,15 +2,54 @@
 
 > velog dashboard
 
-## Getting Started
+## 1. HOW TO USE
 
-1. 
 
-## 사용하는 velog graphQL list
+
+
+## 2. token 활용 사항과 사용하는 velog graphQL list
+
+### 1) token 활용
+
+- 입력한 token은 atlas cloud 로 제공되는 mongodb DBMS에 보관됩니다. network ip accesss 부터, auth 까지 모두 제한 환경이니 보안적 이슈는 mongodb사에 있습니다.
+- 즉, mongodb cloud가 털리는 이슈까지가 아니라면 token이 탈취될 염려가 없습니다. 
+- 만약 그럼에도 불구하고 token 탈취의 의심이 있다면, token의 자체 refresh를 멈추고 폐기에 들어갑니다. 
+- ***식별이 가능한 개인정보를 수집하지 않습니다.*** 수집하는 정보는 velog id (email) 이 unique 구분값을 위해 저장되며, 이는 token을 가지고 있는 제 3자에게 유출되지 않습니다.
+- 마케팅 용도로 사용하지 않습니다. 만약 이메일 전송이 필요하다고 판단 된다면, 개개인에게 공지성 메일 이후 동의를 받고 진행하게 됩니다. 
+
+### 2) 사용하는 velog graphQL
 
 1. `currentUser`
-- velog url를 얻기 위해 사용합니다. `username` 만 가져오며, 그 외 값은 (이메일 등) 가져오지 않고 저장하지 않습니다.
+- velog url를 얻기 위해 사용합니다. `username` 만 가져오며, 그 외 값은 가져오지 않고 누구에게도 제공하지 않습니다.
+- 토큰이 필요한 API 입니다.
 
-2. 
+2. `Posts`
+- 해당 유저의 모든 게시글을 가져오기 위해 사용합니다. token이 필요없는 API 이며, 수정, 생성, 삭제 등의 모든 기능은 사용하지 않습니다. 오직 "READ" 만 사용합니다.
+- 토큰이 필요하지 않은 API 입니다.
 
-https://github.com/inyutin/aiohttp_retry
+3. `getStats`
+- 특정 post uuid 값을 기반으로 통계 데이터를 모두 가져옵니다.
+- 토큰이 필요한 API 입니다.
+
+---
+
+## 3. Getting Started
+
+1. 먼저 mongodb atlas connction info가 필요합니다. - https://www.mongodb.com/atlas/database
+2. `backend` 디렉토리로 이동합니다.
+3. `.env.sample` file을 참조해 `.env` 를 만듭니다.
+4. 해당 디렉토리의 root에서 `yarn` 으로 필요한 모든 라이브러리를 설치하고 `yarn start` 로 가동합니다.
+5. 이제 static file을 열면 됩니다 -> `nginx > pages > index > index.html` 를 더블클릭으로 브라우저에서 열어주세요!
+6. 로그인을 통해 정상적으로 유저 등록이되는지 체크합니다!
+7. 이제 `worker` 로 이동해서 poetry를 활요해 필요한 라이브러리를 세팅합니다. - [poetry 간단 사용법](https://velog.io/@qlgks1/python-poetry-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-project-initializing-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0)
+8. `.env.sample` file을 참조해 `.env` 를 만듭니다.
+9. `main.py` 를 러닝해서 데이터 스크레이핑을 확인합니다. 로깅은 console stream과 file stream 모두 존재합니다!
+10. `token_refresh.py` 로 저장된 user token을 refresh 해줍니다!
+
+
+## 4. 참조
+
+- 프로젝트 진행 기록 - velog : 
+- [mongodb cloud - atlas](https://www.mongodb.com/atlas/database)
+- [poetry 간단 사용법](https://velog.io/@qlgks1/python-poetry-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-project-initializing-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0)
+- [aiohttp_retry](https://github.com/inyutin/aiohttp_retry)

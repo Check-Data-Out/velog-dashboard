@@ -11,7 +11,7 @@ from .models import PostStats, UserInfo
 
 
 class Repository:
-    def __init__(self, db_url: str, period_min: int) -> None:
+    def __init__(self, db_url: str, period_min: int = 10) -> None:
         self.tz = pytz.timezone("Asia/Seoul")
         self.period_min = period_min  # user find할때 업데이트 몇 분 전 user를 가져올 지
         self.__get_connection(db_url)
@@ -126,6 +126,20 @@ class Repository:
                     "lastScrapingAttemptResult": result_msg,
                     "updatedAt": datetime.now(self.tz),
                     "lastScrapingAttemptTime": datetime.now(self.tz),
+                }
+            },
+        )
+        return result
+
+    async def update_userinfo_token(self, user: UserInfo, cookie: dict):
+        coll = self.db["userinfos"]
+        result = await coll.update_one(
+            {"userId": user.userId},
+            {
+                "$set": {
+                    "accessToken": cookie["access_token"],
+                    "refreshToken": cookie["refresh_token"],
+                    "updatedAt": datetime.now(self.tz),
                 }
             },
         )

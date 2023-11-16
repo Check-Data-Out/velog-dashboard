@@ -2,7 +2,7 @@
 
 import UserInfo from "../models/userInfo.js";
 
-const setAuthCookie = (res, accessToken, refreshToken) => {
+const setAuthCookie = async (res, accessToken, refreshToken) => {
     res.cookie("accessToken", accessToken);
     res.cookie("refreshToken", refreshToken);
 };
@@ -16,7 +16,7 @@ export const signUpORsignIn = async (req, res) => {
 
         // 존재하면?
         if (userChkOne) {
-            setAuthCookie(res, accessToken, refreshToken);
+            await setAuthCookie(res, accessToken, refreshToken);
             return res.status(200).json({
                 message: "User logined successfully",
                 user: userChkOne
@@ -32,7 +32,7 @@ export const signUpORsignIn = async (req, res) => {
             // user token update
             const updateResult = await UserInfo.updateTokenByuserId(userChkTwo.userId, accessToken, refreshToken);
             if (updateResult.matchedCount && updateResult.modifiedCount) {
-                setAuthCookie(res, accessToken, refreshToken);
+                await setAuthCookie(res, accessToken, refreshToken);
                 return res.status(200).json({
                     message: "User logined and updated successfully",
                     user: userChkTwo
@@ -47,7 +47,7 @@ export const signUpORsignIn = async (req, res) => {
 
         // 그래도 존재하지 않으면 신규 가입 -> 만료된 토큰일 가능성 있음, 그때 error
         const newUser = await UserInfo.createUser(accessToken, refreshToken);
-        setAuthCookie(res, accessToken, refreshToken);
+        await setAuthCookie(res, accessToken, refreshToken);
         return res.status(201).json({
             message: "User created successfully",
             user: newUser

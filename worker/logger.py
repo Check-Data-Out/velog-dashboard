@@ -46,4 +46,5 @@ def get_logger(name: str) -> Logger:
     return logger
 
 
-LOGGER = get_logger("velog-dashboard-worker")
+MAIN_LOGGER = get_logger("velog-dashboard-worker")
+TOKEN_REFRESH_LOGGER = get_logger("velog-dashboard-token-worker")

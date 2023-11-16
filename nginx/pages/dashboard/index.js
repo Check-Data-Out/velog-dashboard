@@ -130,6 +130,9 @@ const updateUserInfo = async () => {
             <span>${res.userInfo.lastScrapingAttemptResult}</span>
         </div>
     `;
+
+    // 저장된 로컬스토리지도 업데이트 (토큰 리프레싱때문)
+    localStorage.setItem("userInfo", JSON.stringify(res.userInfo));
     return res;
 };
 
@@ -272,7 +275,7 @@ const init = () => {
 
     // polling event 들 등록하기
     updateUserInfo();
-    polling(updateUserInfo, 60000, (res) => { return false });
+    polling(updateUserInfo, 30000, (res) => { return false });
 
     updateUserStats();
     polling(updateUserStats, 60000, (res) => { return false });
