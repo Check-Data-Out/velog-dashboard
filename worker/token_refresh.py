@@ -1,5 +1,6 @@
 import asyncio
 import os
+import sys
 
 from dotenv import load_dotenv
 from logger import TOKEN_REFRESH_LOGGER as log
@@ -8,8 +9,8 @@ from src.models import UserInfo
 from src.modules.velog_apis import fetch_posts, get_cookie_from_one_stats_api
 
 load_dotenv()
-DB_URL = os.getenv("DB_URL")
-PERIOD_MIN = int(os.getenv("PERIOD_MIN"))
+DB_URL = os.getenv("DB_URL", sys.argv[0])
+PERIOD_MIN = int(os.getenv("PERIOD_MIN", sys.argv[1]))
 
 if not DB_URL:
     raise Exception("There is no DB_URL value in env value")

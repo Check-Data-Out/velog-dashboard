@@ -1,8 +1,10 @@
 # Velog Dashboard Project
 
-> velog dashboard project, ***velog의 모든 게시글, 통계 데이터를 한 눈에 편하게 확인하자!!***
+> velog dashboard project, ***velog의 모든 게시글, 통계 데이터를 한 눈에 편하게 확인하자!!*** - https://velog-dashboard.kro.kr/
 
 ## 1. HOW TO USE
+
+#### https://velog-dashboard.kro.kr/
 
 1. https://velog.io/ 에 접속해서 내 벨로그에 들어간다 (ex - https://velog.io/@qlgks1)
 
@@ -14,6 +16,9 @@
 
 5. 특히 게시글이 많은 경우, 오래된 게시글일 경우, retry로 데이터 스크레이핑을 해도 limit에 걸리는 경우가 있습니다. 이 경우 다음 데이터 스크레이핑 사이클에서 update가 되니, 기다려주시면 너무 감사드립니다. 
 
+6. 영상으로 보기! -> https://youtu.be/Ab8c4kmGhQA
+
+7. 최초 로그인 이후, 다시 로그인 시도 하실때 `token issue` 로 고통받으신다면, 우측 하단에 채널톡으로 남겨주시면 제가 핸들링하겠습니다,, (아직 BETA 라 해당 부분은 조금 문제가 있습니다ㅠㅠ)
 
 ## 2. token 활용 사항과 사용하는 velog graphQL list
 

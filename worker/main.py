@@ -1,5 +1,6 @@
 import asyncio
 import os
+import sys
 
 from dotenv import load_dotenv
 from logger import LOGGER as log
@@ -9,8 +10,8 @@ from src.models import PostStats, Stats, UserInfo
 from src.modules.velog_apis import fetch_posts, fetch_stats
 
 load_dotenv()
-DB_URL = os.getenv("DB_URL")
-PERIOD_MIN = int(os.getenv("PERIOD_MIN"))
+DB_URL = os.getenv("DB_URL", sys.argv[0])
+PERIOD_MIN = int(os.getenv("PERIOD_MIN", sys.argv[1]))
 
 if not DB_URL:
     raise Exception("There is no DB_URL value in env value")
@@ -86,12 +87,13 @@ async def main():
             continue
 
 
-async def run_periodically():
-    while True:
-        await main()  # 메인 함수를 실행
-        await asyncio.sleep(600)  # 10분(600초) 동안 대기
+# async def run_periodically():
+#     while True:
+#         await main()  # 메인 함수를 실행
+#         await asyncio.sleep(600)  # 10분(600초) 동안 대기
 
 
-# 이벤트 루프를 사용하여 run_periodically 함수 실행
-# asyncio.run(main())
-asyncio.run(run_periodically())
+# # 이벤트 루프를 사용하여 run_periodically 함수 실행
+# asyncio.run(run_periodically())
+
+asyncio.run(main())
