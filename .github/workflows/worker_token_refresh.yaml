@@ -5,7 +5,7 @@ on:
   #   branches:
   #     - main
   schedule:
-    - cron: "*/20 * * * *" # 20분 마다
+    - cron: "*/40 * * * *" # 40분 마다
 
 jobs:
   build:
