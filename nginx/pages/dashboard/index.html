@@ -78,8 +78,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@^2.0.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1.0.0"></script>
-
+    <!-- HOVER CSS: https://github.com/IanLunn/Hover/blob/master/README.md -->
+    <link rel="stylesheet" href="../hover-min.css" />
     <!-- CUSTOM -->
+    <link rel="stylesheet" href="../global.css" />
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
@@ -98,9 +100,7 @@
       <div class="main-content">
         <!-- 통계 section -->
         <section class="stats-section">
-          <div
-            class="stats-section-block stats-section-block-info stats-total-view"
-          >
+          <div class="stats-section-block stats-section-block-info">
             <span class="stats-section-block-title"
               >데이터 스크레이핑 현황</span
             >
@@ -118,7 +118,7 @@
             </span>
           </div>
 
-          <div class="stats-section-block stats-total-view">
+          <div class="stats-section-block stats-total-view hvr-sweep-to-bottom">
             <span class="stats-section-block-title">Total View</span>
             <span id="userInfo-totalViewCountSum"> - </span>
             <span class="stats-section-block-detail">총 조회수 합입니다.</span>
@@ -139,6 +139,11 @@
           </div>
         </section>
 
+        <!-- Total View 클릭시 보이는 그래프 -->
+        <section class="stats-section-total-graph-wrapper hide" style="background-color: aliceblue;">
+          <canvas id="stats-section-total-graph"></canvas>
+        </section>
+
         <!-- 게시글 section -->
         <section class="posts-section">
           <h2>
@@ -147,10 +152,18 @@
           </h2>
 
           <div class="posts-section-menu">
-            <button data-sortBy="">기본 정렬</button>
-            <button data-sortBy="title">title 사전순 정렬</button>
-            <button data-sortBy="totalViewCount">total view 정렬</button>
-            <button data-sortBy="lastViewCount">today view 정렬</button>
+            <button class="hvr-sweep-to-bottom" data-sortBy="">
+              기본 정렬
+            </button>
+            <button class="hvr-sweep-to-bottom" data-sortBy="title">
+              title 사전순 정렬
+            </button>
+            <button class="hvr-sweep-to-bottom" data-sortBy="totalViewCount">
+              total view 정렬
+            </button>
+            <button class="hvr-sweep-to-bottom" data-sortBy="lastViewCount">
+              today view 정렬
+            </button>
           </div>
           <img
             src="https://cdn.dribbble.com/users/46633/screenshots/1185889/civchoice-loading-gifs800x600.gif"

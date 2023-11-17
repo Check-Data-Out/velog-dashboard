@@ -1,0 +1,56 @@
+.hide {
+    visibility: hidden;
+    opacity: 0;
+    height: 0px;
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* 애니메이션을 적용할 클래스 */
+.fade-in {
+    animation: fadeIn 0.8s forwards;
+    /* 2초 동안 페이드인 */
+}
+
+/* 슬라이드 애니메이션 (위에서 아래로) */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* 슬라이드 애니메이션을 적용할 클래스 */
+.slide-down {
+    animation: slideDown 0.5s forwards;
+    /* 2초 동안 슬라이드 다운 */
+}
+
+/* 슬라이드 애니메이션 (아래에서 위로) */
+@keyframes slideUp {
+    from {
+        transform: translateY(+100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* 슬라이드 애니메이션을 적용할 클래스 */
+.slide-up {
+    animation: slideUp 0.5s forwards;
+    /* 2초 동안 슬라이드 다운 */
+}

@@ -169,7 +169,7 @@ const updatePostList = async () => {
                     ${ele["title"]}
                 </a>
                 <span class="posts-list-today-veiw">
-                    <span class="posts-list-graph" data-post-uuid="${ele["uuid"]}" onclick="updatePostListGraph(event)">
+                    <span class="posts-list-graph hvr-fade" data-post-uuid="${ele["uuid"]}" onclick="updatePostListGraph(event)">
                     </span>
                     ${ele["totalViewCount"]} / ${ele["lastViewCount"]}&nbsp;
                     <img
@@ -206,8 +206,10 @@ const updatePostListGraph = async (event) => {
     const uuid = graphPostSpan.getAttribute("data-post-uuid");
 
     // 이미 그래프가 존재하면 삭제
+    const graphWrapper = document.getElementById(`post-graph-div-${uuid}`);
     if (document.getElementById(uuid)) {
-        document.getElementById(`post-graph-div-${uuid}`).innerHTML = "";
+        graphWrapper.innerHTML = "";
+        graphWrapper.classList.toggle("fade-in")
         return;
     }
 
@@ -220,7 +222,7 @@ const updatePostListGraph = async (event) => {
     }
 
     // 그래프 랜더링
-    document.getElementById(`post-graph-div-${uuid}`).innerHTML = `
+    graphWrapper.innerHTML = `
         <div class="post-graph-div-date">
             <!-- 시작 날짜 선택기 -->
             <label for="${uuid}-startDate">시작 날짜:</label>
@@ -235,6 +237,8 @@ const updatePostListGraph = async (event) => {
         <canvas id="${uuid}" width="400" height="200"></canvas>
     `;
     const chart = await drawPostChart(data, uuid); // 랜더링된 char object
+    graphWrapper.classList.toggle("fade-in");
+
 
     // 동적으로 이벤트 바인딩, char object때문
     document.getElementById(`${uuid}-post-graph-update-btn`).addEventListener("click", (event) => {
@@ -243,6 +247,14 @@ const updatePostListGraph = async (event) => {
         const endDateValue = document.getElementById(`${uuid}-endDate`).value;
         drawFilteredChart(chart, data, startDateValue, endDateValue);
     });
+};
+
+// stats-total-view (total View Div)에 할당될 이벤트
+// #stats-section-total-graph 채우기
+const totalViewGraph = async (event) => {
+    const graphWrapper = document.querySelector("section.stats-section-total-graph-wrapper");
+    graphWrapper.classList.toggle("hide");
+    graphWrapper.classList.toggle("slide-up");
 };
 
 
@@ -272,6 +284,7 @@ const setPostSorting = (event) => {
 const init = () => {
     footerLink("section-footer");
     document.getElementById("navbar-toggle").addEventListener("click", toggleEvent);
+    document.querySelector("div.stats-total-view").addEventListener("click", totalViewGraph);
 
     // polling event 들 등록하기
     updateUserInfo();

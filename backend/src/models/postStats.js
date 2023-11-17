@@ -91,6 +91,37 @@ PostStatsSchema.statics.aggTotalByUserId = async function (userId) {
     }
 }
 
+
+PostStatsSchema.statics.aggDailyTotalByUserId = async function (userId) {
+    try {
+        const aggreateResult = await this.aggregate([
+            // userId에 맞는 문서를 필터링
+            { $match: { userId } },
+
+            // Unwind the stats array to deconstruct it
+            { $unwind: '$stats' },
+            // Group the results by date and sum up the viewCounts
+            {
+                $group: {
+                    _id: { date: '$stats.date' }, // Group by the date field inside stats
+                    totalViewCountPerDay: { $sum: '$stats.viewCount' } // Sum up all viewCounts for each day
+                }
+            },
+            // Optionally sort the results by date
+            {
+                $sort: {
+                    '_id.date': 1 // Sort by date ascending (use -1 for descending)
+                }
+            }
+        ]).exec();
+        return aggreateResult;
+    } catch (error) {
+        console.error(error);
+        throw new Error(error.message);
+    }
+}
+
+
 PostStatsSchema.statics.allPostsAggByUserId = async function (userId) {
 
     try {
@@ -133,7 +164,6 @@ PostStatsSchema.statics.allPostsAggByUserId = async function (userId) {
         throw new Error(error.message);
     }
 }
-
 
 const PostStats = mongoose.model("PostStats", PostStatsSchema);
 export default PostStats;
