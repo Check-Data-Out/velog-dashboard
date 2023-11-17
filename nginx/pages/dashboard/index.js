@@ -2,8 +2,56 @@
 // ====================================================== //
 // Functions
 // ====================================================== //
+// daily total view 통계 데이터 Chart.js로 그래프 그리기
+const drawDailyTotalViewChart = async (data, domId) => {
+    // Chart.js에 넘겨줄 데이터 형식으로 변환
+    const labels = data.map(item => item._id.date.split("T")[0]);
+    const viewData = data.map(item => item.totalViewCountPerDay);
 
-// Chart.js로 그래프 그리기
+    // 차트 생성
+    const ctx = document.getElementById(domId).getContext("2d");
+    return new Chart(ctx, {
+        type: "line", // 라인 차트 사용
+        data: {
+            labels: labels, // x축 데이터
+            datasets: [{
+                label: "View Count",
+                data: viewData, // 조회수 데이터
+                backgroundColor: "rgba(255, 99, 132, 0.2)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: "time",
+                    adapters: {
+                        date: {
+                            lib: luxon // 여기서 Luxon 어댑터를 사용하도록 지정
+                        }
+                    },
+                    time: {
+                        unit: "day",
+                        displayFormats: {
+                            day: "yyyy-MM-dd"
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: "Date"
+                    }
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+};
+
+
+// post 통계 데이터 Chart.js로 그래프 그리기
 const drawPostChart = async (data, uuid) => {
     // Chart.js에 넘겨줄 데이터 형식으로 변환
     const labels = data.map(item => item.date.split("T")[0]);
@@ -60,7 +108,7 @@ const drawPostChart = async (data, uuid) => {
 
 
 // 그려진 chart에 날짜 필터링해서 다시 랜더링하기
-const drawFilteredChart = (chart, data, startDateValue, endDateValue) => {
+const drawFilteredChart = (chart, data, startDateValue, endDateValue, graphType = "") => {
     // 날짜 값이 없으면 업데이트하지 않습니다.
     if (!startDateValue || !endDateValue) return;
 
@@ -70,30 +118,48 @@ const drawFilteredChart = (chart, data, startDateValue, endDateValue) => {
     endDate.setDate(endDate.getDate() + 1); // endDate를 다음 날 자정으로 설정
 
 
-    const filteredData = data.filter(item => {
-        const itemDate = new Date(item.date);
-        return itemDate >= startDate && itemDate < endDate;
-    });
-    console.log(filteredData);
-
-    chart.data.labels = filteredData.map(item => item.date.split("T")[0]);
-    const filteredviewData = filteredData.map(item => item.viewCount);
-    const filteredlikeData = filteredData.map(item => item.likeCount);
-    chart.data.datasets = [{
-        label: "View Count",
-        data: filteredviewData, // 조회수 데이터
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1
-    }, {
-        label: "Like Count",
-        data: filteredlikeData, // 좋아요 수 데이터
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1
-    }];
-    console.log(chart.data.datasets);
-    chart.update();
+    // graphType 값이 비어있으면 post graph
+    if (graphType === "") {
+        const filteredData = data.filter(item => {
+            const itemDate = new Date(item.date);
+            return itemDate >= startDate && itemDate < endDate;
+        });
+        chart.data.labels = filteredData.map(item => item.date.split("T")[0]);
+        const filteredviewData = filteredData.map(item => item.viewCount);
+        const filteredlikeData = filteredData.map(item => item.likeCount);
+        chart.data.datasets = [{
+            label: "View Count",
+            data: filteredviewData, // 조회수 데이터
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1
+        }, {
+            label: "Like Count",
+            data: filteredlikeData, // 좋아요 수 데이터
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1
+        }];
+        chart.update();
+    }
+    // graphType 값이 dailyTotalView
+    else if (graphType === "dailyTotalView") {
+        const filteredData = data.filter(item => {
+            const itemDate = new Date(item._id.date);
+            return itemDate >= startDate && itemDate < endDate;
+        });
+        console.log(filteredData);
+        chart.data.labels = filteredData.map(item => item._id.date.split("T")[0]);
+        const filteredviewData = filteredData.map(item => item.totalViewCountPerDay);
+        chart.data.datasets = [{
+            label: "View Count",
+            data: filteredviewData, // 조회수 데이터
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1
+        }];
+        chart.update();
+    }
 };
 
 
@@ -240,7 +306,7 @@ const updatePostListGraph = async (event) => {
     graphWrapper.classList.toggle("fade-in");
 
 
-    // 동적으로 이벤트 바인딩, char object때문
+    // 동적으로 이벤트 바인딩, chart object때문
     document.getElementById(`${uuid}-post-graph-update-btn`).addEventListener("click", (event) => {
         event.preventDefault();
         const startDateValue = document.getElementById(`${uuid}-startDate`).value;
@@ -255,6 +321,44 @@ const totalViewGraph = async (event) => {
     const graphWrapper = document.querySelector("section.stats-section-total-graph-wrapper");
     graphWrapper.classList.toggle("hide");
     graphWrapper.classList.toggle("slide-up");
+
+    // 이미 그래프가 존재하면 삭제
+    if (graphWrapper.querySelector("canvas")) {
+        graphWrapper.innerHTML = "";
+        return;
+    }
+
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const res = await getData(`/post/daily/${userInfo.userId}`, {}, { accessToken: userInfo.accessToken, refreshToken: userInfo.refreshToken });
+    const data = res.result;
+    if (!data) {
+        return;
+    }
+
+    // 그래프 랜더링
+    graphWrapper.innerHTML = `
+        <div class="post-graph-div-date">
+            <!-- 시작 날짜 선택기 -->
+            <label for="stats-section-total-graph-startDate">시작 날짜:</label>
+            <input type="date" id="stats-section-total-graph-startDate">
+            
+            <!-- 종료 날짜 선택기 -->
+            <label for="stats-section-total-graph-endDate">종료 날짜:</label>
+            <input type="date" id="stats-section-total-graph-endDate">
+
+            <button id="stats-section-total-graph-update-btn" class="post-graph-div-btn">refresh</button>
+        </div>
+        <canvas id="stats-section-total-graph"></canvas>
+    `;
+    const chart = await drawDailyTotalViewChart(data, "stats-section-total-graph"); // 랜더링된 char object
+    // 동적으로 이벤트 바인딩, chart object때문
+    document.getElementById(`stats-section-total-graph-update-btn`).addEventListener("click", (event) => {
+        event.preventDefault();
+        const startDateValue = document.getElementById(`stats-section-total-graph-startDate`).value;
+        const endDateValue = document.getElementById(`stats-section-total-graph-endDate`).value;
+        drawFilteredChart(chart, data, startDateValue, endDateValue, "dailyTotalView");
+    });
+
 };
 
 

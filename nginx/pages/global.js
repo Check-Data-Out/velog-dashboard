@@ -4,6 +4,7 @@
 // Global VAR
 // ====================================================== //
 
+// const DEFAULT_URL = "http://localhost:3000/api" // localonly
 const DEFAULT_URL = "https://velog-dashboard.kro.kr/api"
 
 // ====================================================== //
