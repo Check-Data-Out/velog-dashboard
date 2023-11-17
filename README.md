@@ -73,7 +73,7 @@
 
 ## 4. 참조
 
-- 프로젝트 진행 기록 - velog : 
+- [프로젝트 진행 기록 - velog](https://velog.io/@qlgks1/velog-dashboard-%EC%A0%9C%EC%9E%91%EA%B8%B0-%EB%B2%A8%EB%A1%9C%EA%B7%B8-%ED%86%B5%EA%B3%84%EB%A5%BC-%ED%8E%B8%ED%95%98%EA%B2%8C-%EB%B3%B4%EA%B3%A0-%EC%8B%B6%EC%96%B4%EC%9A%94-%E3%85%A0)
 - [mongodb cloud - atlas](https://www.mongodb.com/atlas/database)
 - [poetry 간단 사용법](https://velog.io/@qlgks1/python-poetry-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-project-initializing-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0)
 - [aiohttp_retry](https://github.com/inyutin/aiohttp_retry)
