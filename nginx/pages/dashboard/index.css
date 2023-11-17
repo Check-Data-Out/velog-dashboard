@@ -3,12 +3,6 @@
     --sub-velog-color: #b0ffe7;
 }
 
-body {
-    font-family: 'Nanum Gothic', sans-serif;
-    background: #111;
-    color: white;
-}
-
 /* ====================================================== */
 /* 네비게이션바 관련 CSS */
 /* ====================================================== */
@@ -47,6 +41,48 @@ body {
 .navbar-toggle:hover {
     background: var(--main-velog-color);
 }
+
+/* ====================================================== */
+/* swal noti modal 관려 CSS */
+/* ====================================================== */
+
+#notiModal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#notiModal div {
+    font-size: 1.4rem;
+    margin-left: 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#notiModal div p {
+    font-size: 1rem;
+}
+
+ol {
+    font-size: 0.9rem;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+ol li {
+    margin-top: 6px;
+}
+
+#swal2-html-container {
+    margin-top: 0px !important;
+}
+
+#swal2-html-container b {
+    cursor: pointer;
+}
+
 
 /* ====================================================== */
 /* 메인과 메인섹션 & Block 관련 CSS */

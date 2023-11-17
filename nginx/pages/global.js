@@ -91,9 +91,9 @@ const getData = async (endPoint = "", queryString = {}, tokens = {}) => {
  * 
  * @param {string} domId 
  */
-const footerLink = (domId = "") => {
+const footerLink = (domId = "", hrefLink = "") => {
     document.getElementById(domId).addEventListener("click", () => {
-        window.location.href = "https://velog.io/@qlgks1";
+        window.location.href = (hrefLink === "") ? "https://velog.io/@qlgks1" : hrefLink;
     });
 };
 

@@ -167,6 +167,45 @@ const drawFilteredChart = (chart, data, startDateValue, endDateValue, graphType 
 // Events
 // ====================================================== //
 
+const notiModal = async () => {
+    const isNotiChecked = localStorage.getItem("isNotiChecked");
+    if (isNotiChecked === true || isNotiChecked) {
+        return;
+    }
+
+    Swal.fire({
+        title: `
+            <div id="notiModal">
+                <img src="../imgs/favicon.png" width="40px" alt="" />
+                <div>
+                    <span>Velog Dashboard</span>
+                    <p>(BETA v0.1)</p>
+                </div>
+            </div>
+        `,
+        // icon: "info",
+        html: `
+            <ol>
+                <li>모바일에서는 그래프가 보기어렵습니다!</li>
+                <li>Total View 를 한 번 눌러봐주세요!!</li>
+                <li>빨간눈(감은눈)은 전날 대비 하락, 초록눈(뜬눈)은 전날 대비 상승 중이라는 의미입니다.</li>
+                <li>"그래프" 버튼으로 각 post의 상세 트래픽 그래프를 봐주세요!</li>
+            </ol>
+            상세한 사항은 <b id="notiModalGithub"> github </b>와 <b id="notiModalVelog"> velog </b>를 참고해 주세요!
+        `,
+        confirmButtonText: "OK",
+        showCloseButton: true,
+        showCancelButton: true,
+        background: "#242424", // 혹은 다크 테마에 맞는 색상으로 설정
+        color: "#fff", // 텍스트 색상을 흰색으로 설정
+        confirmButtonColor: "#20C997",
+    }).then((result) => {
+        localStorage.setItem("isNotiChecked", true);
+    });
+    footerLink("notiModalVelog");
+    footerLink("notiModalGithub", "https://github.com/Check-Data-Out/velog-dashboard");
+}
+
 const toggleEvent = () => {
     const sidebar = document.querySelector(".sidebar");
     const mainContent = document.querySelector(".main-content");
@@ -386,9 +425,10 @@ const setPostSorting = (event) => {
 // ====================================================== //
 
 const init = () => {
-    footerLink("section-footer");
-    document.getElementById("navbar-toggle").addEventListener("click", toggleEvent);
-    document.querySelector("div.stats-total-view").addEventListener("click", totalViewGraph);
+    notiModal(); // notimodal
+    footerLink("section-footer"); // footer 에 href event
+    document.getElementById("navbar-toggle").addEventListener("click", toggleEvent); // 네비게이션바 토글링
+    document.querySelector("div.stats-total-view").addEventListener("click", totalViewGraph); // daily total view 그래프 추가
 
     // polling event 들 등록하기
     updateUserInfo();
