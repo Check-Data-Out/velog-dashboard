@@ -19,8 +19,8 @@ const userInfoSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        // required: true,
+        // unique: true
     },
     lastScrapingAttemptTime: {
         type: Date,
@@ -77,7 +77,7 @@ userInfoSchema.statics.createUser = async function (accessToken, refreshToken) {
     try {
         const res = await this.fetchUserInfo(accessToken, refreshToken);
         const userId = res.data.data.currentUser.username;
-        const email = res.data.data.currentUser.email;
+        const email = (res.data.data.currentUser.email) ? res.data.data.currentUser.email : "";
         const user = new this({ accessToken, refreshToken, userId, email });
         await user.save();
         return user;
