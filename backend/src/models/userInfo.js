@@ -90,11 +90,24 @@ userInfoSchema.statics.createUser = async function (accessToken, refreshToken) {
 
 userInfoSchema.statics.findByToken = async function (accessToken, refreshToken) {
     try {
-        const targetUser = await this.findOne({
+        let targetUser = await this.findOne({
             $or: [
                 { accessToken }, { refreshToken }
             ]
         });
+
+        // . 기준 마지막 값만 다를 경우 찾아주기, (즉 header와 payload만 같은 경우) 
+        const headerAndPayloadAccessToken = accessToken.split(".").slice(0, 2).join(".");
+        const headerAndPayloadRefreshToken = refreshToken.split(".").slice(0, 2).join(".");
+        if (!targetUser) {
+            targetUser = await this.findOne({
+                $or: [
+                    { accessToken: { $regex: headerAndPayloadAccessToken, $options: "i" } },
+                    { refreshToken: { $regex: headerAndPayloadRefreshToken, $options: "i" } }
+                ]
+            })
+        }
+
         return targetUser;
     } catch (error) {
         console.error(error);
