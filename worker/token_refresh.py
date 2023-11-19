@@ -31,9 +31,12 @@ async def main():
         # 전체 게시물 정보를 가져온 뒤, 첫 게시글 uuid만 추출
         posts = await fetch_posts(user.userId)
         log.info(f"{user.userId} - posts {len(posts)}, start to fetching all stats")
-        target_post = list(posts.keys())[0]
+
+        if len(posts) <= 0:
+            continue
 
         try:
+            target_post = list(posts.keys())[0]
             # 해당 uuid 값 기반으로 cookie 값만 가져오기
             target_cooike = await get_cookie_from_one_stats_api(
                 target_post, user.accessToken, user.refreshToken
