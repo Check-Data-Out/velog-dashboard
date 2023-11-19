@@ -15,18 +15,20 @@
 <meta name="robots" content="index, follow" />
 <meta name="author" content="https://github.com/nuung" />
 
-
-
 <!------------------------------------------------------------------------------>
 <!-- Open Graph 프로토콜 -->
 <!------------------------------------------------------------------------------>
 <meta property="og:title" content="velog dashboard" />
-<meta property="og:description" content="Dashboard page for velog. It is third party for https://velog.io that developer's blog website" />
-<meta property="og:image" content="https://velog-dashboard.kro.kr/imgs/velog-dashboard-thumnail.png" />
+<meta
+  property="og:description"
+  content="Dashboard page for velog. It is third party for https://velog.io that developer's blog website"
+/>
+<meta
+  property="og:image"
+  content="https://velog-dashboard.kro.kr/imgs/velog-dashboard-thumnail.png"
+/>
 <meta property="og:url" content="https://velog-dashboard.kro.kr/" />
 <meta property="og:type" content="website" />
-
-
 
 <!------------------------------------------------------------------------------>
 <!-- CDN / common thrid party -->
@@ -80,7 +82,7 @@
 </script>
 <!-- Sweetalert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- GA / Google tag (gtag.js) -->
+<!-- GA / Google Analytics -->
 <script
   async
   src="https://www.googletagmanager.com/gtag/js?id=G-8G3N74JV82"
@@ -94,10 +96,34 @@
 
   gtag("config", "G-8G3N74JV82");
 </script>
-
-
-<!-- HOVER CSS: https://github.com/IanLunn/Hover/blob/master/README.md -->
+<!-- GA / Google Tag manager -->
+<script>
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != "dataLayer" ? "&l=" + l : "";
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", "dataLayer", "GTM-KP27DVMQ");
+</script>
 <link rel="stylesheet" href="../hover-min.css" />
 <link rel="stylesheet" href="../global.css" />
 
+<!------------------------------------------------------------------------------>
+<!-- JS thrid party (end of the body) -->
+<!------------------------------------------------------------------------------>
+<!-- Google Tag Manager (noscript) -->
+<noscript
+  ><iframe
+    src="https://www.googletagmanager.com/ns.html?id=GTM-KP27DVMQ"
+    height="0"
+    width="0"
+    style="display: none; visibility: hidden"
+  ></iframe
+></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<!-- HOVER CSS: https://github.com/IanLunn/Hover/blob/master/README.md -->
 <script src="../global.js"></script>
