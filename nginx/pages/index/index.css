@@ -1,3 +1,8 @@
+:root {
+    --main-velog-color: #20C997;
+    --sub-velog-color: #b0ffe7;
+}
+
 body, html {
     font-family: 'Nanum Gothic', sans-serif;
     /* font-family: 'Nunito Sans', sans-serif; */
@@ -77,14 +82,10 @@ input {
 
 button {
     padding: 10px;
-    background: #20C997;
+    background: var(--main-velog-color);
     color: white;
     border: none;
     cursor: pointer;
-}
-
-button:hover {
-    background: #666;
 }
 
 #sample-login-btn {
