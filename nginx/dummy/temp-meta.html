@@ -109,12 +109,32 @@
     f.parentNode.insertBefore(j, f);
   })(window, document, "script", "dataLayer", "GTM-KP27DVMQ");
 </script>
+<!-- 커스텀 GA, GTag Event -->
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-8G3N74JV82"
+></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-8G3N74JV82");
+  gtag("event", "sign_up_in", { event_name: "sign_up_in" });
+</script>
+<!-- HOVER CSS: https://github.com/IanLunn/Hover/blob/master/README.md -->
 <link rel="stylesheet" href="../hover-min.css" />
 <link rel="stylesheet" href="../global.css" />
 
 <!------------------------------------------------------------------------------>
 <!-- JS thrid party (end of the body) -->
 <!------------------------------------------------------------------------------>
+<!-- SENTRY -->
+<script
+  src="https://js.sentry-cdn.com/76d58760c7a8be54a58dc37108d5c8bb.min.js"
+  crossorigin="anonymous"
+></script>
 <!-- Google Tag Manager (noscript) -->
 <noscript
   ><iframe
@@ -125,5 +145,4 @@
   ></iframe
 ></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<!-- HOVER CSS: https://github.com/IanLunn/Hover/blob/master/README.md -->
 <script src="../global.js"></script>

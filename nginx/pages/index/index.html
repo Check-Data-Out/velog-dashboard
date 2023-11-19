@@ -98,8 +98,8 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-8G3N74JV82");
+      gtag("event", "sign_up_in", { event_name: "sign_up_in" });
     </script>
     <link rel="stylesheet" href="../hover-min.css" />
     <!-- CUSTOM -->
@@ -141,8 +141,6 @@
       <br />
       <span id="login-container-footer">made by Nuung</span>
     </div>
-    <script src="../global.js"></script>
-    <script src="./index.js"></script>
     <!-- Google Tag Manager (noscript) -->
     <noscript
       ><iframe
@@ -152,5 +150,12 @@
         style="display: none; visibility: hidden"
       ></iframe
     ></noscript>
+    <!-- SENTRY -->
+    <script
+      src="https://js.sentry-cdn.com/76d58760c7a8be54a58dc37108d5c8bb.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../global.js"></script>
+    <script src="./index.js"></script>
   </body>
 </html>
