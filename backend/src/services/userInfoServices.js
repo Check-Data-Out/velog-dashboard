@@ -2,10 +2,12 @@
 
 import UserInfo from "../models/userInfo.js";
 
+
 const setAuthCookie = async (res, accessToken, refreshToken) => {
     res.cookie("accessToken", accessToken, { httpOnly: true, secure: true });
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
 };
+
 
 export const signUpORsignIn = async (req, res) => {
     const { body: { accessToken, refreshToken } } = req;
@@ -62,6 +64,23 @@ export const signUpORsignIn = async (req, res) => {
     }
 };
 
+
+export const signInSample = async (req, res) => {
+    try {
+        const sampleUser = await UserInfo.findByuserId("qlgks0");
+        await setAuthCookie(res, sampleUser.accessToken, sampleUser.refreshToken);
+        return res.status(200).json({
+            message: "Sample User logined and updated successfully",
+            user: sampleUser
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+
 export const getUserAllInfo = async (req, res) => {
 
     try {
@@ -88,6 +107,7 @@ export const getUserAllInfo = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
 
 export const getUserOnlyInfo = async (req, res) => {
     try {

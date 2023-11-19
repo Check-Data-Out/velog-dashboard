@@ -42,6 +42,31 @@ postStatsRouter(app, "/api/post");
 
 // ==================== Other Config Setting ==================== //
 
+// for server health checker
+app.get("/api/ping", (req, res) => {
+    const dbStatus = mongoose.connection.readyState;
+    let dbStatusMsg = "unknown";
+    switch (dbStatus) {
+        case 0:
+            dbStatusMsg = "disconnected";
+            break;
+        case 1:
+            dbStatusMsg = "connected";
+            break;
+        case 2:
+            dbStatusMsg = "connecting";
+            break;
+        case 3:
+            dbStatusMsg = "disconnecting";
+            break;
+    }
+
+    return res.status(200).json({
+        message: "pong",
+        dbConnectionStatus: dbStatusMsg
+    });
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) { next(createError(404)); });
 
@@ -53,7 +78,6 @@ app.use(function (err, req, res, next) {
 
     // render the error pag
     res.status(err.status || 500);
-
     res.json({
         message: err.message,
         error: err

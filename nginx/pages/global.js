@@ -109,7 +109,7 @@ const polling = (fn, interval, stopCondition) => {
     let intervalId = setInterval(async () => {
         try {
             const result = await fn();
-            console.log('Polling result:', result);
+            // console.log('Polling result:', result);
             if (stopCondition(result)) {
                 clearInterval(intervalId);
                 console.log('Polling stopped.');
@@ -122,7 +122,7 @@ const polling = (fn, interval, stopCondition) => {
 
     return () => {
         clearInterval(intervalId);
-        console.log('Polling has been manually stopped.');
+        // console.log('Polling has been manually stopped.');
     }; // 폴링을 수동으로 중지할 수 있는 함수 반환
 };
 

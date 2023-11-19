@@ -167,6 +167,10 @@ const drawFilteredChart = (chart, data, startDateValue, endDateValue, graphType 
 // Events
 // ====================================================== //
 
+/**
+ * 최초의 1회 한해서 공지성 정보 modal 띄우기
+ * @returns null
+ */
 const notiModal = async () => {
     const isNotiChecked = localStorage.getItem("isNotiChecked");
     if (isNotiChecked === true || isNotiChecked) {
@@ -206,6 +210,7 @@ const notiModal = async () => {
     footerLink("notiModalVelog");
     footerLink("notiModalGithub", "https://github.com/Check-Data-Out/velog-dashboard");
 }
+
 
 const toggleEvent = () => {
     const sidebar = document.querySelector(".sidebar");
