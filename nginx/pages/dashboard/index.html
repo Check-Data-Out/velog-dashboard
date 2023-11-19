@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>velog dashboard</title>
+    <title>velog dashboard main</title>
     <meta
       name="description"
       content="Dashboard page for velog. It is third party for https://velog.io that developer's blog website"
@@ -31,6 +31,20 @@
       href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Nunito+Sans:ital,wght@1,400;1,900&display=swap"
       rel="stylesheet"
     />
+    <!-- GA / Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-8G3N74JV82"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-8G3N74JV82");
+    </script>
     <!-- Channel Talk -->
     <script>
       (function () {
