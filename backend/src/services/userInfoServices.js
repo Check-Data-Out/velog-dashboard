@@ -31,18 +31,19 @@ export const signUpORsignIn = async (req, res) => {
         const userChkTwo = await UserInfo.findByuserId(userCheckData.data.data.currentUser.username);
 
         if (userChkTwo) {
+            /*
             // user token update
             const updateResult = await UserInfo.updateTokenByuserId(userChkTwo.userId, accessToken, refreshToken);
-            if (updateResult.matchedCount && updateResult.modifiedCount) {
-                await setAuthCookie(res, accessToken, refreshToken);
-                return res.status(200).json({
-                    message: "User logined and updated successfully",
-                    user: userChkTwo
-                });
-            }
-
+            if (updateResult.matchedCount && updateResult.modifiedCount) { }
             return res.status(400).json({
                 message: "User updated fail",
+                user: userChkTwo
+            });
+            */
+
+            await setAuthCookie(res, userChkTwo.accessToken, userChkTwo.refreshToken);
+            return res.status(200).json({
+                message: "User logined and updated successfully",
                 user: userChkTwo
             });
         }
