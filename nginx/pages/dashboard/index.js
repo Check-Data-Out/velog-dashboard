@@ -211,6 +211,7 @@ const notiModal = async () => {
         html: `
             <ol>
                 <li>velog api 기능 개선으로 인해 데이터 <b>신규 데이터 수집은 멈춘 상태</b> 입니다. (23/11/22 ~)</li>
+                <li>기존에 사용하시던 분들은 저장된 데이터까지만 확인 가능합니다. 추후 일정 및 관련사항은 velog를 통해 전달드리겠습니다 :)</li>
             </ol>
             상세한 사항은 <b id="notiModalGithub"> github </b>와 <b id="notiModalVelog"> velog </b>를 참고해 주세요!
         `,
