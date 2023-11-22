@@ -6,6 +6,9 @@
 
 # Velog Dashboard Project
 
+### "12월 중으로 레거시 통계 보기가 안정화 된 상태로 다시 제공" 된다고 하니, 그때 다시 살려보도록 하겠습니다!, 아래는 예정된 원래 글입니다! :') 아쉬운대로 올려봅니다!!
+
+
 > velog dashboard project, **_velog의 모든 게시글, 통계 데이터를 한 눈에 편하게 확인하자!!_** <br/> 
 > [https://velog-dashboard.kro.kr](https://velog-dashboard.kro.kr?utm=github) <br/>
 > 영상으로 보기! -> https://youtu.be/Ab8c4kmGhQA
