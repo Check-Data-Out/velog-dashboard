@@ -6,7 +6,7 @@
 
 # Velog Dashboard Project
 
-### "12월 중으로 레거시 통계 보기가 안정화 된 상태로 다시 제공" 된다고 하니, 그때 다시 살려보도록 하겠습니다!, 아래는 예정된 원래 글입니다! :') 아쉬운대로 올려봅니다!!
+### "12월 중으로 레거시 통계 보기가 안정화 된 상태로 다시 제공" 된다고 하니, 그때 다시 살려보도록 하겠습니다!, [velog 글 보러가기](https://velog.io/@qlgks1/velog-dashboard-%EC%A0%9C%EC%9E%91%EA%B8%B0-3-frontend-1%EC%B0%A8-user-flow-test#12%EC%9B%94-%EC%A4%91%EC%9C%BC%EB%A1%9C-%EB%A0%88%EA%B1%B0%EC%8B%9C-%ED%86%B5%EA%B3%84-%EB%B3%B4%EA%B8%B0%EA%B0%80-%EC%95%88%EC%A0%95%ED%99%94-%EB%90%9C-%EC%83%81%ED%83%9C%EB%A1%9C-%EB%8B%A4%EC%8B%9C-%EC%A0%9C%EA%B3%B5-%EB%90%9C%EB%8B%A4%EA%B3%A0-%ED%95%98%EB%8B%88-%EA%B7%B8%EB%95%8C-%EB%8B%A4%EC%8B%9C-%EC%82%B4%EB%A0%A4%EB%B3%B4%EB%8F%84%EB%A1%9D-%ED%95%98%EA%B2%A0%EC%8A%B5%EB%8B%88%EB%8B%A4-%EC%95%84%EB%9E%98%EB%8A%94-%EC%98%88%EC%A0%95%EB%90%9C-%EC%9B%90%EB%9E%98-%EA%B8%80%EC%9E%85%EB%8B%88%EB%8B%A4--%EC%95%84%EC%89%AC%EC%9A%B4%EB%8C%80%EB%A1%9C-%EC%98%AC%EB%A0%A4%EB%B4%85%EB%8B%88%EB%8B%A4)
 
 
 > velog dashboard project, **_velog의 모든 게시글, 통계 데이터를 한 눈에 편하게 확인하자!!_** <br/> 
