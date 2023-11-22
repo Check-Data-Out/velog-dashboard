@@ -1,11 +1,13 @@
 name: run main.py
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  schedule:
-    - cron: "*/15 * * * *" # 15분 마다
+  workflow_dispatch:
+# on:
+#   # push:
+#   #   branches:
+#   #     - main
+#   schedule:
+#     - cron: "*/15 * * * *" # 15분 마다
 
 jobs:
   build:
@@ -39,4 +41,3 @@ jobs:
           cd ./worker
           mkdir logs
           python main.py
-
