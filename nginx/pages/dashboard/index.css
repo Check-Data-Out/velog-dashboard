@@ -163,7 +163,7 @@ nav ul li:last-child a {
 }
 
 .stats-section-block-detail {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     margin-top: 20px;
     color: var(--main-velog-color);
 }
@@ -207,6 +207,10 @@ nav ul li:last-child a {
     align-items: center;
 }
 
+.posts-section h2 {
+    text-align: center;
+}
+
 .posts-section h2 span {
     font-size: 0.96rem;
     color: var(--main-velog-color);
@@ -221,6 +225,7 @@ nav ul li:last-child a {
     border-radius: 5px;
     /* 상단에 10px, 우측에 15px, 하단에 5px, 좌측에 20px */
     padding: 2px 6px 2px 6px;
+    color: black;
 }
 
 div.hvr-sweep-to-bottom::before {
@@ -283,6 +288,7 @@ button.hvr-sweep-to-bottom::before {
     display: flex;
     align-items: center;
     flex-direction: row;
+    margin-right: 2px;
 }
 
 .posts-list-today-veiw img {
@@ -393,5 +399,17 @@ hr {
     /* 화면 너비가 1200px 이하일 때 적용할 스타일을 여기에 작성합니다. */
     #posts-list li a {
         max-width: 650px;
+    }
+
+    .posts-list-graph::after {
+        content: "▼";
+    }
+
+    .graph-active::after {
+        content: "▲";
+        padding: 6px;
+        border-radius: 15px;
+        background-color: var(--main-velog-color);
+        color: white;
     }
 }

@@ -1,5 +1,6 @@
 import asyncio
 import os
+from concurrent.futures import ProcessPoolExecutor
 
 from dotenv import load_dotenv
 from logger import MAIN_LOGGER as log
@@ -43,7 +44,9 @@ async def make_all_posts_stats(
     ]
 
 
-async def scrapping(rep: Repository, user: UserInfo):
+async def scrapping(rep: Repository, user_id: str):
+    user: UserInfo = await rep.find_user_by_id(user_id)
+
     # 전체 게시물 정보를 가져오기
     posts = await fetch_posts(user.userId)
     log.info(f"{user.userId} - posts {len(posts)}, start to fetching all stats")
@@ -76,26 +79,36 @@ async def scrapping(rep: Repository, user: UserInfo):
         result = await rep.update_userinfo_fail(user, f"500,0 updated,0 upserted,{e}")
 
 
-async def main():
+def run_scrapping(user_id):
+    """asyncio 이벤트 루프 생성 및 scrapping 함수 실행, **동기여야 함**"""
+    # 새 이벤트 루프 생성 및 설정
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    # Repository 인스턴스 생성
     rep = Repository(DB_URL, PERIOD_MIN)
 
+    # scrapping 코루틴 실행
+    try:
+        loop.run_until_complete(scrapping(rep, user_id))
+    finally:
+        loop.close()
+
+
+async def main():
+    rep = Repository(DB_URL, PERIOD_MIN)
     # 모든 데이터 스크레핑 타겟 유저 가져오기
     target_users: list[UserInfo] = await rep.find_users()
-    target_users.reverse()  # 역순, 신규유저부터
 
     if not target_users:
         log.info("empty target user")
 
-    for user in target_users:
-        await scrapping(rep, user)
+    target_users = [user.userId for user in target_users]
+
+    # ProcessPoolExecutor를 사용하여 각 사용자에 대한 scrapping 함수를 별도의 프로세스에서 실행
+    with ProcessPoolExecutor() as executor:
+        executor.map(run_scrapping, target_users)
 
 
-async def run_periodically():
-    while True:
-        await main()  # 메인 함수를 실행
-        await asyncio.sleep(180)  # 10분(600초) 동안 대기
-
-
-# 이벤트 루프를 사용하여 run_periodically 함수 실행
-# asyncio.run(run_periodically())
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

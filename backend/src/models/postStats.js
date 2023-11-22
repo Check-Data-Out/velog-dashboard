@@ -128,11 +128,13 @@ PostStatsSchema.statics.allPostsAggByUserId = async function (userId) {
         const docs = await this.find({ userId }).lean(); // 모든 문서를 가져옴
         const result = docs.map(doc => {
 
+            // stats가 아직 update 안됌 또는 velog issue
             if (doc.stats.length <= 0) {
                 return {
                     uuid: doc.uuid,
                     title: doc.title,
                     totalViewCount: doc.totalViewCount,
+                    totalLikeCount: 0,
                     lastViewCount: 0,
                     updatedAt: doc.updatedAt.$date,
                     url: doc.url,
@@ -151,6 +153,7 @@ PostStatsSchema.statics.allPostsAggByUserId = async function (userId) {
                 uuid: doc.uuid,
                 title: doc.title,
                 totalViewCount: doc.totalViewCount,
+                totalLikeCount: doc.stats[doc.stats.length - 1].likeCount,
                 lastViewCount: lastStat.viewCount,
                 updatedAt: doc.updatedAt.$date,
                 url: doc.url,

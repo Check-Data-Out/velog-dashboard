@@ -175,3 +175,33 @@ const krDateAndTime = (isoDate = "") => {
     const koreanTime = inputDate.toTimeString().split(' ')[0]; // "시:분:초" 형식
     return { koreanDate, koreanTime };
 };
+
+
+/**
+ * localStorage에서 `key` 항목을 가져와서
+ * 이 값이 undefined이거나 null이거나 빈 문자열이거나 빈 객체인지 확인하는 함수입니다.
+ * @param {string} key - localStorage item의 key 값
+ * @returns {boolean} 위의 조건 중 하나에 해당하면 true를 반환하고, 그렇지 않으면 false를 반환합니다.
+ */
+const isLocalItemEmpty = (key = "") => {
+    const targetItem = localStorage.getItem(key);
+
+    // targetItem가 undefined 또는 null인지 확인
+    if (targetItem === undefined || targetItem === null) {
+        return true;
+    }
+
+    // targetItem가 빈 문자열인지 확인
+    if (targetItem === "") {
+        return true;
+    }
+
+    // targetItem를 JSON으로 파싱하여 빈 객체인지 확인
+    try {
+        const obj = JSON.parse(targetItem);
+        return Object.keys(obj).length === 0 && obj.constructor === Object;
+    } catch (e) {
+        // JSON으로 파싱할 수 없는 경우 빈 객체가 아님
+        return false;
+    }
+};

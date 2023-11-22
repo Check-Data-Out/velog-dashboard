@@ -148,7 +148,6 @@ const drawFilteredChart = (chart, data, startDateValue, endDateValue, graphType 
             const itemDate = new Date(item._id.date);
             return itemDate >= startDate && itemDate < endDate;
         });
-        console.log(filteredData);
         chart.data.labels = filteredData.map(item => item._id.date.split("T")[0]);
         const filteredviewData = filteredData.map(item => item.totalViewCountPerDay);
         chart.data.datasets = [{
@@ -166,6 +165,33 @@ const drawFilteredChart = (chart, data, startDateValue, endDateValue, graphType 
 // ====================================================== //
 // Events
 // ====================================================== //
+
+// 로그인 여부 체크 이후, 안되어있으면 index page로
+const loginChkModal = () => {
+    Swal.fire({
+        title: `
+            <div id="notiModal">
+                <img src="../imgs/favicon.png" width="40px" alt="" />
+                <div>
+                    <span>Velog Dashboard</span>
+                    <p>(BETA v0.1)</p>
+                </div>
+            </div>
+        `,
+        html: `
+            로그인이 필요한 페이지 입니다, 로그인 페이지로 돌아갑니다.
+            상세한 사항은 <b id="notiModalGithub"> github </b>와 <b id="notiModalVelog"> velog </b>를 참고해 주세요!
+        `,
+        confirmButtonText: "OK",
+        showCloseButton: true,
+        showCancelButton: true,
+        background: "#242424", // 혹은 다크 테마에 맞는 색상으로 설정
+        color: "#fff", // 텍스트 색상을 흰색으로 설정
+        confirmButtonColor: "#20C997",
+    }).then((result) => {
+        window.location.href = "/index";
+    });
+};
 
 /**
  * 최초의 1회 한해서 공지성 정보 modal 띄우기
@@ -187,13 +213,18 @@ const notiModal = async () => {
                 </div>
             </div>
         `,
-        // icon: "info",
         html: `
             <ol>
                 <li>15분 주기로 데이터를 업데이트 합니다! </br>아무것도 안보이면 기다려주세요 :)</li>
                 <li>모바일에서는 그래프가 보기어렵습니다!</li>
                 <li>Total View 를 한 번 눌러봐주세요!!</li>
-                <li>빨간눈(감은눈)은 전날 대비 하락, 초록눈(뜬눈)은 전날 대비 상승 중이라는 의미입니다.</li>
+                <li>
+                    <img width="20" height="20" src="https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png" alt="sleepy-eyes" /> 은 전날 대비 하락,
+                    <img width="20" height="20" src="https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png" alt="sleepy-eyes" />은 전날 대비 상승 중이라는 의미입니다.
+                </li>
+                <li>
+                <img width="20" height="20" src="https://img.icons8.com/windows/32/20c997/thumb-up.png" alt="thumb-up"/> 는 총 좋아요수의 수 입니다.
+                </li>
                 <li>"그래프" 버튼으로 각 post의 상세 트래픽 그래프를 봐주세요!</li>
             </ol>
             상세한 사항은 <b id="notiModalGithub"> github </b>와 <b id="notiModalVelog"> velog </b>를 참고해 주세요!
@@ -266,6 +297,14 @@ const updateUserStats = async () => {
 
 
 const updatePostList = async () => {
+
+    // 그래프를 하나라도 보고 있다면, re-rendering하지 않는 방향으로
+    if (document.querySelector("#posts-list canvas")) {
+        console.log("취소");
+        return;
+    }
+
+
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const { sortBy, order } = JSON.parse(localStorage.getItem("postsSort"));
     const res = await getData(`/post/${userInfo.userId}`, { sortBy, order }, { accessToken: userInfo.accessToken, refreshToken: userInfo.refreshToken });
@@ -289,6 +328,8 @@ const updatePostList = async () => {
                         src=${(ele["isUp"]) ? "https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png" : "https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png"} 
                         alt="sleepy-eyes"
                     />
+                    <img width="24" height="24" src="https://img.icons8.com/windows/32/20c997/thumb-up.png" alt="thumb-up"/>
+                    ${ele["totalLikeCount"]}
                 </span>
             </li>
             <div id="post-graph-div-${ele["uuid"]}" class="posts-list-graph-content"></div>
@@ -301,8 +342,8 @@ const updatePostList = async () => {
     }
     document.getElementById("posts-list").innerHTML = tempInnerHtml;
     document.querySelector("section.posts-section > h2").innerHTML = `
-        List Of [ ${result.length} ] Posts
-        <span>(total / today)</span>
+        List Of [ ${result.length} ] Posts<br />
+        <span>(total / today / likes)</span>
     `;
     return res;
 };
@@ -431,12 +472,26 @@ const setPostSorting = (event) => {
 // ====================================================== //
 
 const init = () => {
+
+    // mobile nav toggling 강제
+    if (window.matchMedia("(max-width: 600px)").matches) {
+        toggleEvent();
+    }
+
+    // login check
+    if (isLocalItemEmpty("userInfo")) {
+        loginChkModal();
+        return;
+    }
+
     notiModal(); // notimodal
     footerLink("section-footer"); // footer 에 href event
     document.getElementById("navbar-toggle").addEventListener("click", toggleEvent); // 네비게이션바 토글링
     document.querySelector("div.stats-total-view").addEventListener("click", totalViewGraph); // daily total view 그래프 추가
 
+    // ============================ //
     // polling event 들 등록하기
+    // ============================ //
     updateUserInfo();
     polling(updateUserInfo, 30000, (res) => { return false });
 
@@ -446,19 +501,15 @@ const init = () => {
     // post sorting default value
     localStorage.setItem("postsSort", JSON.stringify({ sortBy: "", order: "" }));
     updatePostList();
-    polling(updateUserStats, 360000, (res) => { return false });
+    polling(updatePostList, 360000, (res) => { return false }); // post 전체 polling은 조금 더 고려해보자, (그래프 때문에)
 
+    // ============================ //
     // post sotring button init
+    // ============================ //
     const buttons = document.querySelectorAll("button[data-sortby]");
     buttons.forEach(button => {
         button.addEventListener("click", (event) => { setPostSorting(event); });
     });
-
-    // mobile toggling 강제
-    if (window.matchMedia("(max-width: 600px)").matches) {
-        toggleEvent();
-    }
-
 };
 
 init();

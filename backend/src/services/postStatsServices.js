@@ -48,19 +48,19 @@ export const getAllPostsWithTotal = async (req, res) => {
             return res.status(403).json({ message: "Access Denied" });
         }
 
+        let result = await PostStats.allPostsAggByUserId(userId);
+
         // 정렬 함수를 정의
         const getSortFunction = (sortBy, order) => {
-            const sortOrder = order === 'desc' ? -1 : 1;
+            const sortOrder = order === "desc" ? -1 : 1;
             return (a, b) => {
-                if (sortBy === 'title') {
+                if (sortBy === "title") {
                     return sortOrder * a.title.localeCompare(b.title);
-                } else if (sortBy === 'totalViewCount' || sortBy === 'lastViewCount') {
+                } else if (sortBy === "totalViewCount" || sortBy === "lastViewCount" || sortBy === "totalLikeCount") {
                     return sortOrder * (a[sortBy] - b[sortBy]);
                 }
             };
         };
-
-        let result = await PostStats.allPostsAggByUserId(userId);
 
         // 정렬 함수 세팅
         if (sortBy, order) {

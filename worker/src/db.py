@@ -33,6 +33,11 @@ class Repository:
         documents = await cursor.to_list(length=None)
         return documents
 
+    async def find_user_by_id(self, user_id) -> UserInfo:
+        coll = self.db["userinfos"]
+        result = await coll.find_one({"userId": user_id})
+        return UserInfo(**result)
+
     async def find_users(self) -> list[UserInfo]:
         # 현재 시간으로부터 15분 전 시간 계산
         fifteen_minutes_ago = datetime.now(self.tz) - timedelta(minutes=self.period_min)
