@@ -198,11 +198,6 @@ const loginChkModal = () => {
  * @returns null
  */
 const notiModal = async () => {
-    const isNotiChecked = localStorage.getItem("isNotiChecked");
-    if (isNotiChecked === true || isNotiChecked) {
-        return;
-    }
-
     Swal.fire({
         title: `
             <div id="notiModal">
@@ -215,17 +210,7 @@ const notiModal = async () => {
         `,
         html: `
             <ol>
-                <li>15분 주기로 데이터를 업데이트 합니다! </br>아무것도 안보이면 기다려주세요 :)</li>
-                <li>모바일에서는 그래프가 보기어렵습니다!</li>
-                <li>Total View 를 한 번 눌러봐주세요!!</li>
-                <li>
-                    <img width="20" height="20" src="https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png" alt="sleepy-eyes" /> 은 전날 대비 하락,
-                    <img width="20" height="20" src="https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png" alt="sleepy-eyes" />은 전날 대비 상승 중이라는 의미입니다.
-                </li>
-                <li>
-                <img width="20" height="20" src="https://img.icons8.com/windows/32/20c997/thumb-up.png" alt="thumb-up"/> 는 총 좋아요수의 수 입니다.
-                </li>
-                <li>"그래프" 버튼으로 각 post의 상세 트래픽 그래프를 봐주세요!</li>
+                <li>velog api 기능 개선으로 인해 데이터 <b>신규 데이터 수집은 멈춘 상태</b> 입니다. (23/11/22 ~)</li>
             </ol>
             상세한 사항은 <b id="notiModalGithub"> github </b>와 <b id="notiModalVelog"> velog </b>를 참고해 주세요!
         `,
@@ -238,6 +223,47 @@ const notiModal = async () => {
     }).then((result) => {
         localStorage.setItem("isNotiChecked", true);
     });
+
+    // const isNotiChecked = localStorage.getItem("isNotiChecked");
+    // if (isNotiChecked === true || isNotiChecked) {
+    //     return;
+    // }
+
+    // Swal.fire({
+    //     title: `
+    //         <div id="notiModal">
+    //             <img src="../imgs/favicon.png" width="40px" alt="" />
+    //             <div>
+    //                 <span>Velog Dashboard</span>
+    //                 <p>(BETA v0.1)</p>
+    //             </div>
+    //         </div>
+    //     `,
+    //     html: `
+    //         <ol>
+    //             <li>15분 주기로 데이터를 업데이트 합니다! </br>아무것도 안보이면 기다려주세요 :)</li>
+    //             <li>모바일에서는 그래프가 보기어렵습니다!</li>
+    //             <li>Total View 를 한 번 눌러봐주세요!!</li>
+    //             <li>
+    //                 <img width="20" height="20" src="https://img.icons8.com/material-sharp/24/F25081/sleepy-eyes.png" alt="sleepy-eyes" /> 은 전날 대비 하락,
+    //                 <img width="20" height="20" src="https://img.icons8.com/external-royyan-wijaya-detailed-outline-royyan-wijaya/24/20c997/external-eyes-interface-royyan-wijaya-detailed-outline-royyan-wijaya.png" alt="sleepy-eyes" />은 전날 대비 상승 중이라는 의미입니다.
+    //             </li>
+    //             <li>
+    //             <img width="20" height="20" src="https://img.icons8.com/windows/32/20c997/thumb-up.png" alt="thumb-up"/> 는 총 좋아요수의 수 입니다.
+    //             </li>
+    //             <li>"그래프" 버튼으로 각 post의 상세 트래픽 그래프를 봐주세요!</li>
+    //         </ol>
+    //         상세한 사항은 <b id="notiModalGithub"> github </b>와 <b id="notiModalVelog"> velog </b>를 참고해 주세요!
+    //     `,
+    //     confirmButtonText: "OK",
+    //     showCloseButton: true,
+    //     showCancelButton: true,
+    //     background: "#242424", // 혹은 다크 테마에 맞는 색상으로 설정
+    //     color: "#fff", // 텍스트 색상을 흰색으로 설정
+    //     confirmButtonColor: "#20C997",
+    // }).then((result) => {
+    //     localStorage.setItem("isNotiChecked", true);
+    // });
     footerLink("notiModalVelog");
     footerLink("notiModalGithub", "https://github.com/Check-Data-Out/velog-dashboard");
 }
@@ -300,7 +326,6 @@ const updatePostList = async () => {
 
     // 그래프를 하나라도 보고 있다면, re-rendering하지 않는 방향으로
     if (document.querySelector("#posts-list canvas")) {
-        console.log("취소");
         return;
     }
 
